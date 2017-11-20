@@ -1,5 +1,6 @@
 package se.coconutflightbooking;
 
-public class FoodMenu {
+public class FoodMenuItem {
 
+	
 }
