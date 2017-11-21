@@ -1,4 +1,4 @@
-
+package se.coconutflightbooking.gui;
 
 
 import javax.swing.*;
