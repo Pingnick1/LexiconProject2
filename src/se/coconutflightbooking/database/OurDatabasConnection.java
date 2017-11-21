@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OurDatabasConnection {
 	private Connection conn = null;
@@ -49,13 +51,39 @@ public class OurDatabasConnection {
 		OurDatabasConnection dbConnection = new OurDatabasConnection();
 		
 		
+		/*
 		
-		String sql = "Select * from MYTABLE";
 		//String sql = "Select * from MYTABLE";
+		for(int i=0;i<10;i++) {
+			
+			dbConnection.addData("CCC00000"+ (i), "Niklas" + i, 5, 5, "HANGAR","AIRPLANES");
+		}
+		*/
+		String sql = "Select * from AIRPLANES";
+		HashMap<String, HashMap<String, String>> result = dbConnection.retrieveResultSet(sql);
 		
-		dbConnection.addData("", "", 1);
-		dbConnection.retrieveResultSet(sql);
+		if(result.size()>0) {
+			for (String airPlaneID : result.keySet()) {
+				
+				HashMap<String, String> result2 = result.get(airPlaneID); 
+				
+				System.out.println("AirPlaneID:" + airPlaneID + 
+									" NickName: " + result2.get("name") + 
+									", Firstclass: " + result2.get("FIRSTCLASS_SEAT_AMOUNT") + 
+									", Economicclass: " + result2.get("ECONOMIC_SEAT_AMOUNT") +
+									", Status: " + result2.get("STATUS"));	
+			}
+		}
+		else {
+			System.out.println("Nothing retieved..");
+		}
 	}
+	
+	
+	private void createTable() {
+		
+	}
+	
 	
 	public void removeData(String sql, String title, int id) {
 		
@@ -95,11 +123,11 @@ public class OurDatabasConnection {
 	
 	}
 	
-	public void addData(String sql, String title, int id) {
+	public void addData(String airPlaneID, String name, int economicSeatAmount, int firstClassSeatAmount, String status, String tableName) {
 		Connection conn = null;
 		PreparedStatement pstm = null;
-		title = "Niklas234324";
-		sql = "insert into MYTABLE (ID, name) values (?,?)";
+		//title = "Niklas234324";
+		String sql = "insert into "+ tableName + " (PLANE_ID, NAME, ECONOMIC_SEAT_AMOUNT, FIRSTCLASS_SEAT_AMOUNT, STATUS) values (?,?,?,?,?)";
 		
 		try { 
 
@@ -107,8 +135,11 @@ public class OurDatabasConnection {
 				
 				conn = DriverManager.getConnection("jdbc:derby://localhost:50000/test");
 				pstm = conn.prepareStatement(sql);
-				pstm.setInt(1, 2);
-				pstm.setString(2,title);
+				pstm.setString(1, airPlaneID);
+				pstm.setString(2, name);
+				pstm.setInt(3, economicSeatAmount);
+				pstm.setInt(4, firstClassSeatAmount);
+				pstm.setString(5, status);
 				
 				int results = pstm.executeUpdate();
 				System.out.println("Records amended: " + results);
@@ -155,8 +186,11 @@ public class OurDatabasConnection {
 		}
 	}
 	
-	public void retrieveResultSet (String sql) {
-
+	public HashMap<String, HashMap<String, String>> retrieveResultSet (String sql) {
+		//HashMap<String,String> retrieveMap = new HashMap<String, String>();
+		HashMap<String, HashMap<String, String>> retrieveMap = new HashMap<String, HashMap<String, String>>();
+		
+		//ArrayList <String, ArrayList<String>> minArray = new ArrayList<String, ArrayList<String>>();
 		try {
 			//Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
 			
@@ -164,8 +198,19 @@ public class OurDatabasConnection {
 				try(Statement stm = conn.createStatement()){
 					try(ResultSet rs = stm.executeQuery(sql)){
 						while (rs.next()) {
-							System.out.println(rs.getString("name"));
-						}
+							HashMap<String, String> row = new HashMap<String, String>();
+							row.put("PLANE_ID", rs.getString("PLANE_ID"));
+							row.put("name", rs.getString("name"));
+							row.put("ECONOMIC_SEAT_AMOUNT", rs.getString("ECONOMIC_SEAT_AMOUNT"));
+							row.put("FIRSTCLASS_SEAT_AMOUNT", rs.getString("FIRSTCLASS_SEAT_AMOUNT"));
+							row.put("STATUS", rs.getString("STATUS"));
+							
+							//System.out.println(rs.getString("PLANE_ID") + " " + rs.getString("name") + " " + rs.getString("ECONOMIC_SEAT_AMOUNT") + " " + rs.getString("FIRSTCLASS_SEAT_AMOUNT") + " " + rs.getString("STATUS"));
+							retrieveMap.put(rs.getString("PLANE_ID"), row);
+						}	
+					}
+					finally {
+						return retrieveMap;
 					}
 				}
 			}	
@@ -175,6 +220,7 @@ public class OurDatabasConnection {
 			System.out.println("Something went wrong");
 			System.out.println(e);
 		}
+		return null;
 
 	}
 	
