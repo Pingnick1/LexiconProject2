@@ -4,14 +4,15 @@ public class AirPlane {
 	String airPlaneID;
 	Integer nrOfEconomcSeats=5;
 	Integer nrOfFirstClass=5;
+	AirPlaneStatus airPlaneStatus;
 	
 	
-	
-	public AirPlane(String airPlaneID, Integer nrOfEconomcSeats, Integer nrOfFirstClass) {
+	public AirPlane(String airPlaneID, Integer nrOfEconomcSeats, Integer nrOfFirstClass, AirPlaneStatus airPlaneStatus) {
 		super();
 		this.airPlaneID = airPlaneID;
 		this.nrOfEconomcSeats = nrOfEconomcSeats;
 		this.nrOfFirstClass = nrOfFirstClass;
+		this.airPlaneStatus = airPlaneStatus;
 	}
 
 
@@ -58,11 +59,56 @@ public class AirPlane {
 	}
 
 
+	public AirPlaneStatus getAirPlaneStatus() {
+		return airPlaneStatus;
+	}
+
+
+
+	public void setAirPlaneStatus(AirPlaneStatus airPlaneStatus) {
+		this.airPlaneStatus = airPlaneStatus;
+	}
+
+
 
 	@Override
 	public String toString() {
 		return "AirPlane [airPlaneID=" + airPlaneID + ", nrOfEconomcSeats=" + nrOfEconomcSeats + ", nrOfFirstClass="
 				+ nrOfFirstClass + "]";
+	}
+
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((airPlaneID == null) ? 0 : airPlaneID.hashCode());
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		AirPlane other = (AirPlane) obj;
+		if (airPlaneID == null) {
+			if (other.airPlaneID != null) {
+				return false;
+			}
+		} else if (!airPlaneID.equals(other.airPlaneID)) {
+			return false;
+		}
+		return true;
 	}
 	
 	
