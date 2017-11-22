@@ -2,6 +2,8 @@ package se.coconutflightbooking.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
@@ -25,30 +27,24 @@ class JUnitTestDepartureListHandler {
 		AirPlane a1 = new AirPlane("CCN000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a2 = new AirPlane("CCN000002", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a3 = new AirPlane("CCN000003", 5, 5, AirPlaneStatus.HANGAR);
+				
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
 		
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
+		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 		
-		Departure d1 = new Departure("DDD001", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD002", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD003", a3, 20000, 5000);
-		Departure d4 = new Departure("DDD004", a1, 20000, 5000);
-		
-		try {
-			departureListHandler.addDeparture(d1);
-			departureListHandler.addDeparture(d2);
-			departureListHandler.addDeparture(d3);
-			departureListHandler.addDeparture(d4);
-			
-		} catch (DepartureAlreadyExistInListException e) {
-			System.out.println("DepartureAlreadyExistInListException");
-			e.printStackTrace();
-		}
-		
+		departureListHandler.addDeparture(dateTime1, "London", a1, 20000, 5000);
+		departureListHandler.addDeparture(dateTime2, "Bombay", a2, 20000, 5000);
+		departureListHandler.addDeparture(dateTime3, "Panama", a3, 20000, 5000);
+		departureListHandler.addDeparture(dateTime4, "New York", a1, 20000, 5000);
 		
 		String newName = departureListHandler.getNextUniqueDepartureID();
 		System.out.println("Nytt namn: " + newName);
 		assertTrue(newName.equals("DDD005"));
 		
-		Departure d5 = new Departure(newName, a1, 20000, 5000);
+		Departure d5 = new Departure("DDD005", dateTime4, "Sidney", a1, 20000, 5000);
 		
 		try {
 			departureListHandler.addDeparture(d5);
@@ -62,61 +58,111 @@ class JUnitTestDepartureListHandler {
 		assertTrue(newName.equals("DDD006"));
 	}
 	
+
+	
 	@Test
-	void testAddDeparture() {
+	void testAddDeparture1() {
+		System.out.println("Test AddDeparture1():");
+		DepartureListHandler departureListHandler = new DepartureListHandler();
+		
+		AirPlane a1 = new AirPlane("CCN000001", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a2 = new AirPlane("CCN000002", 5, 5, AirPlaneStatus.HANGAR);
+			
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+		
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
+		
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "New York", a2, 20000, 5000);		
+		
+		try {
+			assertTrue(departureListHandler.addDeparture(d1));
+			assertTrue(departureListHandler.addDeparture(d2));
+		} catch (DepartureAlreadyExistInListException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testAddDeparture2() {
+		System.out.println("Test AddDeparture2():");
 		DepartureListHandler departureListHandler = new DepartureListHandler();
 		
 		AirPlane a1 = new AirPlane("CCN000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a2 = new AirPlane("CCN000002", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a3 = new AirPlane("CCN000003", 5, 5, AirPlaneStatus.HANGAR);
-		
-		
-		Departure d1 = new Departure("DDD000001", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD000002", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD000003", a3, 20000, 5000);
-		Departure d4 = new Departure("DDD000004", a1, 20000, 5000);
-		
-		try {
-			assertTrue(departureListHandler.addDeparture(d1));
-			assertTrue(departureListHandler.addDeparture(d2));
-			assertTrue(departureListHandler.addDeparture(d3));
-			assertTrue(departureListHandler.addDeparture(d4));
 			
-		} catch (DepartureAlreadyExistInListException e) {
-			System.out.println("DepartureAlreadyExistInListException");
-			e.printStackTrace();
-		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+		
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
+		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
+			
+		assertTrue(departureListHandler.addDeparture(dateTime1, "London", a1, 20000, 5000));
+		assertTrue(departureListHandler.addDeparture(dateTime2, "Bombay", a2, 20000, 5000));
+		assertTrue(departureListHandler.addDeparture(dateTime3, "Panama", a3, 20000, 5000));
+		assertTrue(departureListHandler.addDeparture(dateTime4, "New York", a1, 20000, 5000));
+
 	}
 	
+	@Test
+	void testAddDeparture3() {
+		System.out.println("Test AddDeparture3():");
+		DepartureListHandler departureListHandler = new DepartureListHandler();
+		
+		AirPlane a1 = new AirPlane("CCN000001", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a2 = new AirPlane("CCN000002", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a3 = new AirPlane("CCN000003", 5, 5, AirPlaneStatus.HANGAR);
+			
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+		
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
+		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
+			
+		try {
+			assertTrue(departureListHandler.addDeparture("DDD001", dateTime1, "London", a1, 20000, 5000));
+			assertTrue(departureListHandler.addDeparture("DDD002",dateTime2, "Bombay", a2, 20000, 5000));
+			assertTrue(departureListHandler.addDeparture("DDD003",dateTime3, "Panama", a3, 20000, 5000));
+			assertTrue(departureListHandler.addDeparture("DDD004",dateTime4, "New York", a1, 20000, 5000));
+		} catch (DepartureAlreadyExistInListException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	
 	@Test
 	void testGetDeparture() {
+		System.out.println("Test GetDeparture():");
 		DepartureListHandler departureListHandler = new DepartureListHandler();
 		
 		AirPlane a1 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a2 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a3 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
+				
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
 		
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
+		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
+			
+		departureListHandler.addDeparture(dateTime1, "London", a1, 20000, 5000);
+		departureListHandler.addDeparture(dateTime2, "Bombay", a2, 20000, 5000);
+		departureListHandler.addDeparture(dateTime3, "Panama", a3, 20000, 5000);
+		departureListHandler.addDeparture(dateTime4, "New York", a1, 20000, 5000);
 		
-		Departure d1 = new Departure("DDD000001", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD000002", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD000003", a3, 20000, 5000);
-		Departure d4 = new Departure("DDD000004", a1, 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "Bombay", a2, 20000, 5000);
 		
 		try {
-			departureListHandler.addDeparture(d1);
-			departureListHandler.addDeparture(d2);
-			departureListHandler.addDeparture(d3);
-			departureListHandler.addDeparture(d4);
-			
-		} catch (DepartureAlreadyExistInListException e) {
-			System.out.println("DepartureAlreadyExistInListException");
-			e.printStackTrace();
-		}
-		
-		try {
-			Departure test = departureListHandler.getDeparture("DDD000002");
-			
+			Departure test = departureListHandler.getDeparture("DDD002");
+			System.out.println(test);
+			System.out.println(d2);
 			assertTrue(test.equals(d2));
 			
 		} catch (DepartureNotFoundException e) {
@@ -136,29 +182,26 @@ class JUnitTestDepartureListHandler {
 		AirPlane a2 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a3 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
 		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
 		
-		Departure d1 = new Departure("DDD000001", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD000002", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD000003", a3, 20000, 5000);
-		Departure d4 = new Departure("DDD000004", a1, 20000, 5000);
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
+		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 		
 		
-		try {
-			departureListHandler.addDeparture(d1);
-			departureListHandler.addDeparture(d2);
-			departureListHandler.addDeparture(d3);
-			departureListHandler.addDeparture(d4);
-			
-		} catch (DepartureAlreadyExistInListException e) {
-			System.out.println("DepartureAlreadyExistInListException");
-			e.printStackTrace();
-		}
+		departureListHandler.addDeparture(dateTime1, "London", a1, 20000, 5000);
+		departureListHandler.addDeparture(dateTime2, "Bombay", a2, 20000, 5000);
+		departureListHandler.addDeparture(dateTime3, "Panama", a3, 20000, 5000);
+		departureListHandler.addDeparture(dateTime4, "New York", a1, 20000, 5000);
 			
 		HashMap<String, Departure> departureList = departureListHandler.getDepartureList();
 		
 		assertTrue(departureList.size() == departureListHandler.size());
-
-		System.out.println(departureList);
+		
+		for(Departure departureObject : departureList.values()) {
+			System.out.println(departureObject);
+		}
 	}
 
 	@Test
@@ -170,12 +213,18 @@ class JUnitTestDepartureListHandler {
 		AirPlane a1 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a2 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a3 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
+				
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
 		
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
+		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 		
-		Departure d1 = new Departure("DDD000001", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD000002", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD000003", a3, 20000, 5000);
-		Departure d4 = new Departure("DDD000004", a1, 20000, 5000);
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "Bombay", a2, 20000, 5000);
+		Departure d3 = new Departure("DDD003", dateTime3, "Panama", a3, 20000, 5000);
+		Departure d4 = new Departure("DDD004", dateTime4, "New York", a1, 20000, 5000);
 		
 		
 		departureList.put(d1.getDepartureID(), d1);
@@ -191,6 +240,7 @@ class JUnitTestDepartureListHandler {
 
 	@Test
 	void testSize() {
+		
 		System.out.println("Test size():");
 		DepartureListHandler departureList = new DepartureListHandler();
 		int testSize1 = departureList.size();
@@ -202,12 +252,18 @@ class JUnitTestDepartureListHandler {
 		AirPlane a1 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a2 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a3 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
+				
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
 		
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
+		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 		
-		Departure d1 = new Departure("DDD000001", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD000002", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD000003", a3, 20000, 5000);
-		Departure d4 = new Departure("DDD000004", a1, 20000, 5000);
+		Departure d1 = new Departure("CNN001", dateTime1, "London", a1, 20000, 5000);
+		Departure d2 = new Departure("CNN002", dateTime2, "Bombay", a2, 20000, 5000);
+		Departure d3 = new Departure("CNN003", dateTime3, "Panama", a3, 20000, 5000);
+		Departure d4 = new Departure("CNN004", dateTime4, "New York", a1, 20000, 5000);
 		
 		try {
 			departureList.addDeparture(d1);
@@ -231,17 +287,24 @@ class JUnitTestDepartureListHandler {
 
 	@Test
 	void testRemoveDepartureFromList() {
+		System.out.println("Test testRemoveDepartureFromList():");
 		DepartureListHandler departureList = new DepartureListHandler();
 		
 		AirPlane a1 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a2 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
 		AirPlane a3 = new AirPlane("CCC000001", 5, 5, AirPlaneStatus.HANGAR);
+				
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
 		
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
+		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 		
-		Departure d1 = new Departure("DDD000001", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD000002", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD000003", a3, 20000, 5000);
-		Departure d4 = new Departure("DDD000004", a1, 20000, 5000);
+		Departure d1 = new Departure("CNN001", dateTime1, "London", a1, 20000, 5000);
+		Departure d2 = new Departure("CNN002",dateTime2, "Bombay", a2, 20000, 5000);
+		Departure d3 = new Departure("CNN003",dateTime3, "Panama", a3, 20000, 5000);
+		Departure d4 = new Departure("CNN004",dateTime4, "New York", a1, 20000, 5000);
 		
 		try {
 			departureList.addDeparture(d1);
@@ -253,8 +316,7 @@ class JUnitTestDepartureListHandler {
 			System.out.println("DepartureAlreadyExistInListException");
 			e.printStackTrace();
 		}
-		
-		
+			
 		System.out.println(departureList);
 		
 		try {

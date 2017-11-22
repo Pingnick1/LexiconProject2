@@ -1,5 +1,6 @@
 package se.coconutflightbooking;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import se.coconutflightbooking.exceptions.DepartureAlreadyExistInListException;
@@ -8,11 +9,8 @@ import se.coconutflightbooking.exceptions.DepartureNotFoundException;
 public class DepartureListHandler {
 	HashMap<String, Departure> departureList = new HashMap<String, Departure>();
 	String prefixDepartureID = "DDD00";
-	//int listCounter;
 	
 	public static void main(String[] args) {
-		
-
 
 	}
 	
@@ -68,11 +66,37 @@ public class DepartureListHandler {
 			else {
 				return false;
 			}
-
 		}
 		else
 			throw new DepartureAlreadyExistInListException();
 	}
+	
+	public boolean addDeparture(LocalDateTime departureDateTime, String destination, AirPlane airPlane, Integer firstClassTicketPrice, Integer economyClassTicketPrice)  {
+		String departureID = this.getNextUniqueDepartureID();
+		Departure newDeparture = new Departure(departureID, departureDateTime, destination, airPlane, firstClassTicketPrice, economyClassTicketPrice);
+		this.departureList.put(newDeparture.getDepartureID(), newDeparture);
+		
+		Departure result = this.departureList.get(newDeparture.getDepartureID());
+		
+		if(result.equals(newDeparture)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean addDeparture(String departureID, LocalDateTime departureDateTime, String destination, AirPlane airPlane, Integer firstClassTicketPrice, Integer economyClassTicketPrice) throws DepartureAlreadyExistInListException  {
+		Departure newDeparture = new Departure(departureID, departureDateTime, destination, airPlane, firstClassTicketPrice, economyClassTicketPrice);
+		
+		if(this.addDeparture(newDeparture))
+			return true;						
+		else
+			return false;
+	}
+	
+	
+	
 	
 	public Departure getDeparture(String DepartureID) throws DepartureNotFoundException{
 		if(this.departureList.containsKey(DepartureID)) {
@@ -80,15 +104,12 @@ public class DepartureListHandler {
 		}
 		else
 			throw new  DepartureNotFoundException();
-	}
-		
+	}	
 	
 	
 	public HashMap<String, Departure> getDepartureList() {
 		return departureList;
 	}
-
-
 
 
 	public boolean setDepartureList(HashMap<String, Departure> departureList) {
@@ -99,8 +120,6 @@ public class DepartureListHandler {
 			return false;
 		
 	}
-
-
 
 
 	/**
