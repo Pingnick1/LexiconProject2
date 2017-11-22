@@ -23,11 +23,11 @@ public class Departure {
 		this.departureID = departureID;
 	}
 
-	public AirPlane getAirPlane() {
-		return airPlane;
+	public AirPlane getAirPlaneBoundToDeparture() {
+		return this.airPlane;
 	}
 
-	public void setAirPlane(AirPlane airPlane) {
+	public void setAirPlaneToDeparture(AirPlane airPlane) {
 		this.airPlane = airPlane;
 	}
 

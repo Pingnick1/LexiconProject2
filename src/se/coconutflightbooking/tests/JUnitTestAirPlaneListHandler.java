@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import se.coconutflightbooking.AirPlane;
 import se.coconutflightbooking.AirPlaneListHandler;
-import se.coconutflightbooking.AirPlaneNotFoundException;
 import se.coconutflightbooking.AirPlaneStatus;
+import se.coconutflightbooking.exceptions.AirPlaneNotFoundException;
 
 class JUnitTestAirPlaneListHandler {
 
