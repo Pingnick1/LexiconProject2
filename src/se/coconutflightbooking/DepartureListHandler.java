@@ -7,51 +7,47 @@ import se.coconutflightbooking.exceptions.DepartureNotFoundException;
 
 public class DepartureListHandler {
 	HashMap<String, Departure> departureList = new HashMap<String, Departure>();
-	String prefixDepartureID = "CCN00";
+	String prefixDepartureID = "DDD00";
 	//int listCounter;
 	
 	public static void main(String[] args) {
-		StringBuilder returnString = new StringBuilder();
-		DepartureListHandler testHandler = new DepartureListHandler();
-		String prefixDepartureID = "CCN00";
 		
-		int nextDepartureIdSuffix = testHandler.size()+1;
-		
-		do {
-			returnString = new StringBuilder();
-			
-			returnString.append(prefixDepartureID);
-			returnString.append(nextDepartureIdSuffix);
-		}while(testHandler.departureIdExistInList(returnString.toString()));
-		
-		System.out.println(returnString.toString());
 
 
 	}
 	
-	private String UniqueDepartureIdGenerator() {
-		StringBuilder returnString = new StringBuilder();
-		int nextDepartureIdSuffix = this.departureList.size()+1;
-		
-		
-		
-		do {
-			returnString = new StringBuilder();
+	public String getNextUniqueDepartureID() {
+		StringBuilder newName = new StringBuilder();
+		int nextDepartureIdSuffix = this.departureList.size() + 1;
 			
-			returnString.append(this.prefixDepartureID);
-			returnString.append(nextDepartureIdSuffix);
-		}while(this.departureIdExistInList(returnString.toString()));
+		boolean isUniqueName = false;
+		do {
+			if(newName.length()>0)
+				newName.delete(0, newName.length()-1);
+			
+			newName.append(this.prefixDepartureID);
+			newName.append(nextDepartureIdSuffix);
+			
+			if(!this.departureIdExistInList(newName.toString() ) ){
+				//System.out.println("Nytt namn: " + newName.toString());
+				isUniqueName = true;	
+			}	
+		}while(!isUniqueName);
 		
-		return returnString.toString();
-		
-		
-		
-		
-
-		return returnString.toString();
+		//System.out.println("Nytt namn: " + newName.toString());
+		return newName.toString();
 	}
 	
-	private boolean departureIdExistInList(String departureID) {
+	
+	public String getPrefixDepartureID() {
+		return prefixDepartureID;
+	}
+
+	public void setPrefixDepartureID(String prefixDepartureID) {
+		this.prefixDepartureID = prefixDepartureID;
+	}
+
+	public boolean departureIdExistInList(String departureID) {
 		if(this.departureList.containsKey(departureID)) {
 			return true;
 		}

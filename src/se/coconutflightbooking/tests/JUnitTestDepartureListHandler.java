@@ -17,6 +17,52 @@ class JUnitTestDepartureListHandler {
 
 	
 	@Test
+	void testNextDepartureIdGenerator() {
+		System.out.println("Test NextDepartureIdGenerator():");
+		
+		DepartureListHandler departureListHandler = new DepartureListHandler();
+		
+		AirPlane a1 = new AirPlane("CCN000001", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a2 = new AirPlane("CCN000002", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a3 = new AirPlane("CCN000003", 5, 5, AirPlaneStatus.HANGAR);
+		
+		
+		Departure d1 = new Departure("DDD001", a1, 20000, 5000);
+		Departure d2 = new Departure("DDD002", a2, 20000, 5000);
+		Departure d3 = new Departure("DDD003", a3, 20000, 5000);
+		Departure d4 = new Departure("DDD004", a1, 20000, 5000);
+		
+		try {
+			departureListHandler.addDeparture(d1);
+			departureListHandler.addDeparture(d2);
+			departureListHandler.addDeparture(d3);
+			departureListHandler.addDeparture(d4);
+			
+		} catch (DepartureAlreadyExistInListException e) {
+			System.out.println("DepartureAlreadyExistInListException");
+			e.printStackTrace();
+		}
+		
+		
+		String newName = departureListHandler.getNextUniqueDepartureID();
+		System.out.println("Nytt namn: " + newName);
+		assertTrue(newName.equals("DDD005"));
+		
+		Departure d5 = new Departure(newName, a1, 20000, 5000);
+		
+		try {
+			departureListHandler.addDeparture(d5);
+		} catch (DepartureAlreadyExistInListException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		newName = departureListHandler.getNextUniqueDepartureID();
+		System.out.println("Nytt namn: " + newName);
+		assertTrue(newName.equals("DDD006"));
+	}
+	
+	@Test
 	void testAddDeparture() {
 		DepartureListHandler departureListHandler = new DepartureListHandler();
 		
