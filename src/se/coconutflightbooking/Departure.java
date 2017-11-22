@@ -1,33 +1,76 @@
 package se.coconutflightbooking;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Departure {
 	private String departureID;
+	private String destinationName;
+	private LocalDateTime departureDateTime;
 	private AirPlane airPlane;
 	private Integer firstClassTicketPrice;
 	private Integer economyClassTicketPrice;
-	
-	public Departure(String departureID, AirPlane airPlane, Integer firstClassTicketPrice,
-			Integer economyClassTicketPrice) {
+	//String str = "1986-04-08 12:30";
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+
+	public Departure(String departureID, LocalDateTime departureDateTime, String destination, AirPlane airPlane, Integer firstClassTicketPrice, Integer economyClassTicketPrice) {
 		super();
 		this.departureID = departureID;
+		this.destinationName = destination;
+		this.departureDateTime = departureDateTime;
 		this.airPlane = airPlane;
 		this.firstClassTicketPrice = firstClassTicketPrice;
 		this.economyClassTicketPrice = economyClassTicketPrice;
 	}
-
+	
+	
 	public String getDepartureID() {
 		return departureID;
 	}
+
+
+
 
 	public void setDepartureID(String departureID) {
 		this.departureID = departureID;
 	}
 
-	public AirPlane getAirPlane() {
-		return airPlane;
+
+
+
+	public String getDestinationName() {
+		return destinationName;
 	}
 
-	public void setAirPlane(AirPlane airPlane) {
+
+
+
+	public void setDestinationName(String destinationName) {
+		this.destinationName = destinationName;
+	}
+
+
+
+
+	public LocalDateTime getDepartureDateTime() {
+		return departureDateTime;
+	}
+
+
+
+
+	public void setDepartureDateTime(LocalDateTime departureDateTime) {
+		this.departureDateTime = departureDateTime;
+	}
+
+
+
+
+	public AirPlane getAirPlaneBoundToDeparture() {
+		return this.airPlane;
+	}
+
+	public void setAirPlaneToDeparture(AirPlane airPlane) {
 		this.airPlane = airPlane;
 	}
 
@@ -49,7 +92,7 @@ public class Departure {
 
 	@Override
 	public String toString() {
-		return "Departure [departureID=" + departureID + ", airPlane=" + airPlane + ", firstClassTicketPrice="
+		return "DepartureID: "+ departureID + ", Date: " + this.departureDateTime.toString() + " Destination: " + this.destinationName + ", AirPlane: " + airPlane + ", firstClassTicketPrice="
 				+ firstClassTicketPrice + ", economyClassTicketPrice=" + economyClassTicketPrice + "]";
 	}
 
@@ -57,7 +100,9 @@ public class Departure {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((departureDateTime == null) ? 0 : departureDateTime.hashCode());
 		result = prime * result + ((departureID == null) ? 0 : departureID.hashCode());
+		result = prime * result + ((destinationName == null) ? 0 : destinationName.hashCode());
 		return result;
 	}
 
@@ -72,7 +117,15 @@ public class Departure {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
+		
 		Departure other = (Departure) obj;
+		if (departureDateTime == null) {
+			if (other.departureDateTime != null) {
+				return false;
+			}
+		} else if (!departureDateTime.equals(other.departureDateTime)) {
+			return false;
+		}
 		if (departureID == null) {
 			if (other.departureID != null) {
 				return false;
@@ -80,8 +133,19 @@ public class Departure {
 		} else if (!departureID.equals(other.departureID)) {
 			return false;
 		}
+		if (destinationName == null) {
+			if (other.destinationName != null) {
+				return false;
+			}
+		} else if (!destinationName.equals(other.destinationName)) {
+			return false;
+		}
 		return true;
 	}
+
+
+
+	
 	
 	
 }

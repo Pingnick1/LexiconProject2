@@ -1,4 +1,4 @@
-package se.coconutflightbooking;
+package se.coconutflightbooking.exceptions;
 
 public class AirPlaneNotFoundException extends Exception {
 
