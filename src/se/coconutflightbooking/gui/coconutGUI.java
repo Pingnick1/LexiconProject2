@@ -77,10 +77,9 @@ public class coconutGUI extends JFrame
       if (add.isSelected())
           msg += "lägga till en flight och ";
       if (delete.isSelected())
-          msg += "ta bort en post ";
+          msg += "boka luftiga förfriskningar ";
       if (print.isSelected())
           msg += "avsluta och ";
-
       if (tops.equals(""))   
           msg += "inget mer.";
       else
