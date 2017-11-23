@@ -56,7 +56,7 @@ public class WinBuildTest {
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(135, 206, 250));
-		frame.setBounds(100, 100, 554, 643);
+		frame.setBounds(100, 100, 740, 643);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Avsluta");
@@ -109,8 +109,9 @@ public class WinBuildTest {
 			}
 		});
 		
-		JLabel lblCoconutAirways = DefaultComponentFactory.getInstance().createTitle("CocoNut Airways");
-		JLabel lblUpAndRunning = DefaultComponentFactory.getInstance().createLabel("Up and Running :)");
+		JLabel lblCoconutAirways = DefaultComponentFactory.getInstance().createTitle("CocoNut Airways                                                 ");
+		JLabel lblUpAndRunning = DefaultComponentFactory.getInstance().createLabel("                          Flight                   "
+				+ "               First Class     Economy");
 		
 		JSpinner spinner = new JSpinner();
 		
@@ -123,26 +124,39 @@ public class WinBuildTest {
 		JList list = new JList();
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("mouseclick");
+			}
+		});
+		table.setColumnSelectionAllowed(true);
+		table.setCellSelectionEnabled(true);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{"Test1", null, null, null},
-				{null, null, null, null},
-				{null, null, "Test2", null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
+				{"SK161 G\u00F6teborg 14.45", new Integer(9), new Integer(2)},
+				{"departure.getDate().toString()", "2 seats", null},
+				{"departure.getDate().toString()", "i", null},
+				{"departure.getDate().toString()", "9", "2"},
+				{"departure.getDate().toString()", null, null},
+				{"departure.getDate().toString()", null, null},
+				{"departure.getDate().toString()", null, "Line7"},
+				{"SK162 Göteborg 16.45", null, null},
+				{"departure.getDate().toString()", "0", "0"},
+				{ "SK161 Göteborg 18.45", "0", "2"},
+				{"departure.getDate().toString()", "2", "0"},
+				{"departure.getDate().toString()", null, null},
+				{"departure.getDate().toString()", null, "Bottom"},
+				{"departure.getDate().toString()", null, null},
+				{"departure.getDate().toString()", null, null},
+				{"departure.getDate().toString()", null, null},
 			},
 			new String[] {
-				"New column", "New column", "New column", "New column"
+				"Flight", "First Class/Available", "Economy/Available"
 			}
 		));
+		table.getColumnModel().getColumn(0).setPreferredWidth(220);
+		table.getColumnModel().getColumn(0).setMinWidth(175);
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -152,72 +166,61 @@ public class WinBuildTest {
 							.addGap(72)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(rdbtnNewRadioButton_6)
-										.addComponent(rdbtnNewRadioButton_4)
-										.addComponent(rdbtnNewRadioButton_3)
-										.addComponent(rdbtnNewRadioButton_1))
-									.addPreferredGap(ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
-									.addComponent(table, GroupLayout.PREFERRED_SIZE, 239, GroupLayout.PREFERRED_SIZE))
+									.addComponent(rdbtnNewRadioButton_6)
+									.addGap(137)
+									.addComponent(table, GroupLayout.PREFERRED_SIZE, 366, GroupLayout.PREFERRED_SIZE))
+								.addComponent(rdbtnNewRadioButton_3)
 								.addComponent(rdbtnNewRadioButton_2)
-								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-									.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-										.addComponent(rdbtnNewRadioButton)
-										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(txtrCocolevel, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE))
-									.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-										.addComponent(rdbtnNewRadioButton_5)
-										.addGap(18)
-										.addComponent(spinner, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)))))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(51)
-							.addComponent(lblCoconutAirways)
-							.addGap(18)
-							.addComponent(lblUpAndRunning))
+								.addComponent(rdbtnNewRadioButton_4)
+								.addComponent(rdbtnNewRadioButton_5)
+								.addComponent(spinner, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+								.addComponent(rdbtnNewRadioButton_1)
+								.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(rdbtnNewRadioButton)
+								.addComponent(txtrCocolevel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(112)
 							.addComponent(list, GroupLayout.PREFERRED_SIZE, 1, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-					.addContainerGap(213, Short.MAX_VALUE)
-					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(179))
+					.addContainerGap(74, Short.MAX_VALUE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(51)
+					.addComponent(lblCoconutAirways)
+					.addPreferredGap(ComponentPlacement.RELATED, 390, Short.MAX_VALUE)
+					.addComponent(lblUpAndRunning)
+					.addGap(114))
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblCoconutAirways)
 						.addComponent(lblUpAndRunning))
 					.addGap(11)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE, false)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(table, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(rdbtnNewRadioButton_6)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(rdbtnNewRadioButton_1)
-							.addGap(28)
-							.addComponent(rdbtnNewRadioButton_3)
-							.addGap(27)))
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(rdbtnNewRadioButton_6)
+						.addComponent(table, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(rdbtnNewRadioButton_1)
+					.addGap(28)
+					.addComponent(rdbtnNewRadioButton_3)
+					.addGap(27)
 					.addComponent(rdbtnNewRadioButton_4)
 					.addGap(18)
 					.addComponent(rdbtnNewRadioButton_2)
 					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(rdbtnNewRadioButton_5)
-						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(26)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(rdbtnNewRadioButton)
-						.addComponent(txtrCocolevel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addComponent(rdbtnNewRadioButton_5)
+					.addGap(11)
+					.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
+					.addComponent(txtrCocolevel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-			.addPreferredGap(ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+					.addGap(18)
+					.addComponent(rdbtnNewRadioButton)
+					.addGap(99)
 					.addComponent(list, GroupLayout.PREFERRED_SIZE, 1, GroupLayout.PREFERRED_SIZE)
-					.addGap(69))	
+					.addGap(69))
 		);
 		frame.getContentPane().setLayout(groupLayout);
 		
