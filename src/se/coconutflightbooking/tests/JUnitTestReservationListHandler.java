@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import se.coconutflightbooking.Departure;
 import se.coconutflightbooking.Reservation;
 import se.coconutflightbooking.ReservationListHandler;
 import se.coconutflightbooking.TicketType;
+import se.coconutflightbooking.exceptions.ReservationAlreadyExistInListException;
 import se.coconutflightbooking.exceptions.ReservationNotFoundException;
 
 class JUnitTestReservationListHandler {
@@ -109,24 +111,130 @@ class JUnitTestReservationListHandler {
 		}
 	}
 
-	@Test
-	void testAddReservationLocalDateTimeStringDepartureTicketTypeInteger() {
-		fail("Not yet implemented"); // TODO
-	}
 
 	@Test
 	void testAddReservationStringLocalDateTimeStringDepartureTicketTypeInteger() {
-		fail("Not yet implemented"); // TODO
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+		
+		ReservationListHandler reservationHandler = new ReservationListHandler();
+		String customer1 = "Lars Nilsson";
+		String customer2 = "Sune Olsson";
+		String customer3 = "Pelle Svensson";
+		AirPlane a1 = new AirPlane("CCN000001", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a2 = new AirPlane("CCN000002", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a3 = new AirPlane("CCN000003", 5, 5, AirPlaneStatus.HANGAR);
+
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "London", a2, 20000, 5000);
+		Departure d3 = new Departure("DDD003", dateTime3, "London", a3, 20000, 5000);
+		
+		try {
+			reservationHandler.addReservation("RRR001", dateTime1, customer1, d1, TicketType.FIRSTCLASS, 200000);
+			reservationHandler.addReservation("RRR002", dateTime2, customer2, d2, TicketType.ECONOMYCLASS, 5000);
+			reservationHandler.addReservation("RRR003", dateTime3, customer3, d3, TicketType.FIRSTCLASS, 200000);
+			//reservationHandler.addReservation("RRR003", dateTime3, customer3, d3, TicketType.FIRSTCLASS, 200000);
+		} catch (ReservationAlreadyExistInListException e) {
+			System.out.println("ReservationAlreadyExistInListException");
+			e.printStackTrace();
+		}
+		
+		
+		assertThrows(ReservationAlreadyExistInListException.class,
+	            ()->{
+	            	reservationHandler.addReservation("RRR003", dateTime3, customer3, d3, TicketType.FIRSTCLASS, 200000);
+	            	
+	            //do whatever you want to do here
+	            //ex : objectName.thisMethodShoulThrowNullPointerExceptionForNullParameter(null);
+	            });
+		
+		
+		
+		//assertTrue(reservationHandler.reservationIdExistInList("RRR002"));
+		//assertFalse(reservationHandler.reservationIdExistInList("RRR0"));
 	}
 
 	@Test
 	void testGetReservationList() {
-		fail("Not yet implemented"); // TODO
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+		
+		ReservationListHandler reservationHandler = new ReservationListHandler();
+		String customer1 = "Lars Nilsson";
+		String customer2 = "Sune Olsson";
+		String customer3 = "Pelle Svensson";
+		AirPlane a1 = new AirPlane("CCN000001", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a2 = new AirPlane("CCN000002", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a3 = new AirPlane("CCN000003", 5, 5, AirPlaneStatus.HANGAR);
+
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "London", a2, 20000, 5000);
+		Departure d3 = new Departure("DDD003", dateTime3, "London", a3, 20000, 5000);
+		
+		try {
+			reservationHandler.addReservation("RRR001", dateTime1, customer1, d1, TicketType.FIRSTCLASS, 200000);
+			reservationHandler.addReservation("RRR002", dateTime2, customer2, d2, TicketType.ECONOMYCLASS, 5000);
+			reservationHandler.addReservation("RRR003", dateTime3, customer3, d3, TicketType.FIRSTCLASS, 200000);
+			
+		} catch (ReservationAlreadyExistInListException e) {
+			System.out.println("ReservationAlreadyExistInListException");
+			e.printStackTrace();
+		}
+		
+		HashMap<String, Reservation> result = reservationHandler.getReservationList();
+		
+		assertTrue(result.size()==3);
+		
+		
 	}
 
 	@Test
 	void testSetReservationList() {
-		fail("Not yet implemented"); // TODO
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+		
+		ReservationListHandler reservationHandler = new ReservationListHandler();
+		String customer1 = "Lars Nilsson";
+		String customer2 = "Sune Olsson";
+		String customer3 = "Pelle Svensson";
+		AirPlane a1 = new AirPlane("CCN000001", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a2 = new AirPlane("CCN000002", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a3 = new AirPlane("CCN000003", 5, 5, AirPlaneStatus.HANGAR);
+
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "London", a2, 20000, 5000);
+		Departure d3 = new Departure("DDD003", dateTime3, "London", a3, 20000, 5000);
+		
+		HashMap<String, Reservation> newReservationList = new HashMap<String, Reservation>();
+		
+		try {
+			reservationHandler.addReservation("RRR001", dateTime1, customer1, d1, TicketType.FIRSTCLASS, 200000);
+			reservationHandler.addReservation("RRR002", dateTime2, customer2, d2, TicketType.ECONOMYCLASS, 5000);
+			reservationHandler.addReservation("RRR003", dateTime3, customer3, d3, TicketType.FIRSTCLASS, 200000);
+			
+		} catch (ReservationAlreadyExistInListException e) {
+			System.out.println("ReservationAlreadyExistInListException");
+			e.printStackTrace();
+		}
+		
+		HashMap<String, Reservation> result = reservationHandler.getReservationList();
+		
+		assertTrue(result.size()==3);
+		
+		ReservationListHandler reservationHandler2 = new ReservationListHandler();
+		
+		reservationHandler2.setReservationList(result);
+		
+		assertTrue(reservationHandler2.size()==3);
 	}
 
 	@Test

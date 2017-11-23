@@ -107,13 +107,7 @@ public class ReservationListHandler {
 	}
 	*/
 	
-	/**
-	 * 
-	 * @return Number of reservations in the list
-	 */
-	public int size() {
-		return this.reservationList.size();
-	}
+	
 	
 	
 	/**
@@ -160,6 +154,14 @@ public class ReservationListHandler {
 	}
 	
 
+	/**
+	 * 
+	 * @return Number of reservations in the list
+	 */
+	public int size() {
+		return this.reservationList.size();
+	}
+	
 	/**
 	 * @return the reservationList
 	 */
