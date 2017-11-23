@@ -41,7 +41,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-public class TestWindows {
+public class TestWindows extends JFrame{
 
 	private JFrame frmCoconutAirwaysBooking;
 	private JTable table;
