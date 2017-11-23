@@ -13,13 +13,11 @@ public class FoodOrderItem {
 		this.bookingID = bookingID;
 		this.foodOrderItemID = foodOrderItemID;
 		this.foodMenuItem = foodMenuItem;
+		this.isFirstClass = isFirstClass;
 		this.cost = cost;
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// TESt mer
-	}	
+		
 	
 	public String getBookingID() {
 		return bookingID;
@@ -66,6 +64,7 @@ public class FoodOrderItem {
 	  public String toString() { 
 	    return "AirPlane [foodOrderID=" + foodOrderItemID + "]"; 
 	   
+	    
 	  } 
 	 
 	  @Override 
