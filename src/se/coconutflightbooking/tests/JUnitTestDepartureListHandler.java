@@ -35,16 +35,16 @@ class JUnitTestDepartureListHandler {
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
 		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 		
-		departureListHandler.addDeparture(dateTime1, "London", a1, 20000, 5000);
-		departureListHandler.addDeparture(dateTime2, "Bombay", a2, 20000, 5000);
-		departureListHandler.addDeparture(dateTime3, "Panama", a3, 20000, 5000);
-		departureListHandler.addDeparture(dateTime4, "New York", a1, 20000, 5000);
+		departureListHandler.addDeparture(dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime3, "Panama", a3.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime4, "New York", a1.getAirPlaneID(), 20000, 5000);
 		
 		String newName = departureListHandler.getNextUniqueDepartureID();
 		System.out.println("Nytt namn: " + newName);
 		assertTrue(newName.equals("DDD005"));
 		
-		Departure d5 = new Departure("DDD005", dateTime4, "Sidney", a1, 20000, 5000);
+		Departure d5 = new Departure("DDD005", dateTime4, "Sidney", a1.getAirPlaneID(), 20000, 5000);
 		
 		try {
 			departureListHandler.addDeparture(d5);
@@ -73,8 +73,8 @@ class JUnitTestDepartureListHandler {
 		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
 		
-		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD002", dateTime2, "New York", a2, 20000, 5000);		
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "New York", a2.getAirPlaneID(), 20000, 5000);		
 		
 		try {
 			assertTrue(departureListHandler.addDeparture(d1));
@@ -101,10 +101,10 @@ class JUnitTestDepartureListHandler {
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
 		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 			
-		assertTrue(departureListHandler.addDeparture(dateTime1, "London", a1, 20000, 5000));
-		assertTrue(departureListHandler.addDeparture(dateTime2, "Bombay", a2, 20000, 5000));
-		assertTrue(departureListHandler.addDeparture(dateTime3, "Panama", a3, 20000, 5000));
-		assertTrue(departureListHandler.addDeparture(dateTime4, "New York", a1, 20000, 5000));
+		assertTrue(departureListHandler.addDeparture(dateTime1, "London", a1.getAirPlaneID(), 20000, 5000));
+		assertTrue(departureListHandler.addDeparture(dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000));
+		assertTrue(departureListHandler.addDeparture(dateTime3, "Panama", a3.getAirPlaneID(), 20000, 5000));
+		assertTrue(departureListHandler.addDeparture(dateTime4, "New York", a1.getAirPlaneID(), 20000, 5000));
 
 	}
 	
@@ -125,10 +125,10 @@ class JUnitTestDepartureListHandler {
 		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 			
 		try {
-			assertTrue(departureListHandler.addDeparture("DDD001", dateTime1, "London", a1, 20000, 5000));
-			assertTrue(departureListHandler.addDeparture("DDD002",dateTime2, "Bombay", a2, 20000, 5000));
-			assertTrue(departureListHandler.addDeparture("DDD003",dateTime3, "Panama", a3, 20000, 5000));
-			assertTrue(departureListHandler.addDeparture("DDD004",dateTime4, "New York", a1, 20000, 5000));
+			assertTrue(departureListHandler.addDeparture("DDD001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000));
+			assertTrue(departureListHandler.addDeparture("DDD002",dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000));
+			assertTrue(departureListHandler.addDeparture("DDD003",dateTime3, "Panama", a3.getAirPlaneID(), 20000, 5000));
+			assertTrue(departureListHandler.addDeparture("DDD004",dateTime4, "New York", a1.getAirPlaneID(), 20000, 5000));
 		} catch (DepartureAlreadyExistInListException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -152,12 +152,12 @@ class JUnitTestDepartureListHandler {
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
 		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 			
-		departureListHandler.addDeparture(dateTime1, "London", a1, 20000, 5000);
-		departureListHandler.addDeparture(dateTime2, "Bombay", a2, 20000, 5000);
-		departureListHandler.addDeparture(dateTime3, "Panama", a3, 20000, 5000);
-		departureListHandler.addDeparture(dateTime4, "New York", a1, 20000, 5000);
+		departureListHandler.addDeparture(dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime3, "Panama", a3.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime4, "New York", a1.getAirPlaneID(), 20000, 5000);
 		
-		Departure d2 = new Departure("DDD002", dateTime2, "Bombay", a2, 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000);
 		
 		try {
 			Departure test = departureListHandler.getDeparture("DDD002");
@@ -190,10 +190,10 @@ class JUnitTestDepartureListHandler {
 		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 		
 		
-		departureListHandler.addDeparture(dateTime1, "London", a1, 20000, 5000);
-		departureListHandler.addDeparture(dateTime2, "Bombay", a2, 20000, 5000);
-		departureListHandler.addDeparture(dateTime3, "Panama", a3, 20000, 5000);
-		departureListHandler.addDeparture(dateTime4, "New York", a1, 20000, 5000);
+		departureListHandler.addDeparture(dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime3, "Panama", a3.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime4, "New York", a1.getAirPlaneID(), 20000, 5000);
 			
 		HashMap<String, Departure> departureList = departureListHandler.getDepartureList();
 		
@@ -221,10 +221,10 @@ class JUnitTestDepartureListHandler {
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
 		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 		
-		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD002", dateTime2, "Bombay", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD003", dateTime3, "Panama", a3, 20000, 5000);
-		Departure d4 = new Departure("DDD004", dateTime4, "New York", a1, 20000, 5000);
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000);
+		Departure d3 = new Departure("DDD003", dateTime3, "Panama", a3.getAirPlaneID(), 20000, 5000);
+		Departure d4 = new Departure("DDD004", dateTime4, "New York", a1.getAirPlaneID(), 20000, 5000);
 		
 		
 		departureList.put(d1.getDepartureID(), d1);
@@ -260,10 +260,10 @@ class JUnitTestDepartureListHandler {
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
 		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 		
-		Departure d1 = new Departure("CNN001", dateTime1, "London", a1, 20000, 5000);
-		Departure d2 = new Departure("CNN002", dateTime2, "Bombay", a2, 20000, 5000);
-		Departure d3 = new Departure("CNN003", dateTime3, "Panama", a3, 20000, 5000);
-		Departure d4 = new Departure("CNN004", dateTime4, "New York", a1, 20000, 5000);
+		Departure d1 = new Departure("CNN001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		Departure d2 = new Departure("CNN002", dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000);
+		Departure d3 = new Departure("CNN003", dateTime3, "Panama", a3.getAirPlaneID(), 20000, 5000);
+		Departure d4 = new Departure("CNN004", dateTime4, "New York", a1.getAirPlaneID(), 20000, 5000);
 		
 		try {
 			departureList.addDeparture(d1);
@@ -301,10 +301,10 @@ class JUnitTestDepartureListHandler {
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
 		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
 		
-		Departure d1 = new Departure("CNN001", dateTime1, "London", a1, 20000, 5000);
-		Departure d2 = new Departure("CNN002",dateTime2, "Bombay", a2, 20000, 5000);
-		Departure d3 = new Departure("CNN003",dateTime3, "Panama", a3, 20000, 5000);
-		Departure d4 = new Departure("CNN004",dateTime4, "New York", a1, 20000, 5000);
+		Departure d1 = new Departure("CNN001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		Departure d2 = new Departure("CNN002",dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000);
+		Departure d3 = new Departure("CNN003",dateTime3, "Panama", a3.getAirPlaneID(), 20000, 5000);
+		Departure d4 = new Departure("CNN004",dateTime4, "New York", a1.getAirPlaneID(), 20000, 5000);
 		
 		try {
 			departureList.addDeparture(d1);

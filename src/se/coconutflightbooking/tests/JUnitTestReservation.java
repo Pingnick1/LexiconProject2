@@ -38,8 +38,8 @@ class JUnitTestReservation {
 		
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		
-		Departure d1 = new Departure("", dateTime1, "London", a1, 20000,5000);
-		Departure d2 = new Departure("", dateTime2, "Madrid", a2, 20000,5000);
+		Departure d1 = new Departure("", dateTime1, "London", a1.getAirPlaneID(), 20000,5000);
+		Departure d2 = new Departure("", dateTime2, "Madrid", a2.getAirPlaneID(), 20000,5000);
 		
 		Reservation r1 = new Reservation("CCNB001", dateTime3, "Niklas Svensson", d1, TicketType.ECONOMYCLASS, 5000);
 		//Reservation r2 = new Reservation("CCNB002", "David Svensson", d1, TicketType.FIRSTCLASS, 20000);

@@ -5,7 +5,8 @@ import java.util.HashMap;
 public class FoodMenuListHandler {
 
 	HashMap<String, FoodMenuItem> ourFoodMenuList = new HashMap<String, FoodMenuItem>();
-
+	String prefixDepartureID = "FOOD00";
+	
 	public HashMap<String, FoodMenuItem> getFoodMenuList() {
 		return ourFoodMenuList;
 	}

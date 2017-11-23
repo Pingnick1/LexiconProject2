@@ -23,7 +23,7 @@ class JUnitTestDeparture {
 		LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
 		
 		
-		Departure d1 = new Departure("DDD001", dateTime,"Panama" , a1, 20000, 5000);
+		Departure d1 = new Departure("DDD001", dateTime,"Panama" , a1.getAirPlaneID(), 20000, 5000);
 		
 		//assertTrue(d1.getDepartureID().toString().equals("DDD000001"));
 		

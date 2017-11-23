@@ -8,7 +8,7 @@ import se.coconutflightbooking.exceptions.DepartureNotFoundException;
 
 public class DepartureListHandler {
 	HashMap<String, Departure> departureList = new HashMap<String, Departure>();
-	String prefixDepartureID = "DDD00";
+	String prefixDepartureID = "DDD000";
 	
 	public static void main(String[] args) {
 
@@ -71,7 +71,7 @@ public class DepartureListHandler {
 			throw new DepartureAlreadyExistInListException();
 	}
 	
-	public boolean addDeparture(LocalDateTime departureDateTime, String destination, AirPlane airPlane, Integer firstClassTicketPrice, Integer economyClassTicketPrice)  {
+	public boolean addDeparture(LocalDateTime departureDateTime, String destination, String airPlane, Integer firstClassTicketPrice, Integer economyClassTicketPrice)  {
 		String departureID = this.getNextUniqueDepartureID();
 		Departure newDeparture = new Departure(departureID, departureDateTime, destination, airPlane, firstClassTicketPrice, economyClassTicketPrice);
 		this.departureList.put(newDeparture.getDepartureID(), newDeparture);
@@ -86,7 +86,7 @@ public class DepartureListHandler {
 		}
 	}
 	
-	public boolean addDeparture(String departureID, LocalDateTime departureDateTime, String destination, AirPlane airPlane, Integer firstClassTicketPrice, Integer economyClassTicketPrice) throws DepartureAlreadyExistInListException  {
+	public boolean addDeparture(String departureID, LocalDateTime departureDateTime, String destination, String airPlane, Integer firstClassTicketPrice, Integer economyClassTicketPrice) throws DepartureAlreadyExistInListException  {
 		Departure newDeparture = new Departure(departureID, departureDateTime, destination, airPlane, firstClassTicketPrice, economyClassTicketPrice);
 		
 		if(this.addDeparture(newDeparture))

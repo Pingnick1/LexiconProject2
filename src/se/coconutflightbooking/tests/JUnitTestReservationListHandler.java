@@ -39,7 +39,7 @@ class JUnitTestReservationListHandler {
 
 		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		
-		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
 		
 		reservationHandler.addReservation(customer, d1, TicketType.FIRSTCLASS, 200000);
 			
@@ -75,9 +75,9 @@ class JUnitTestReservationListHandler {
 		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		
-		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD002", dateTime2, "London", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD003", dateTime3, "London", a3, 20000, 5000);
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "London", a2.getAirPlaneID(), 20000, 5000);
+		Departure d3 = new Departure("DDD003", dateTime3, "London", a3.getAirPlaneID(), 20000, 5000);
 		
 		reservationHandler.addReservation(customer, d1, TicketType.FIRSTCLASS, 200000);
 		reservationHandler.addReservation(customer, d2, TicketType.ECONOMYCLASS, 5000);
@@ -97,7 +97,7 @@ class JUnitTestReservationListHandler {
 
 		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		
-		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
 		
 		reservationHandler.addReservation(customer, d1, TicketType.FIRSTCLASS, 200000);
 			
@@ -128,9 +128,9 @@ class JUnitTestReservationListHandler {
 		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		
-		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD002", dateTime2, "London", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD003", dateTime3, "London", a3, 20000, 5000);
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "London", a2.getAirPlaneID(), 20000, 5000);
+		Departure d3 = new Departure("DDD003", dateTime3, "London", a3.getAirPlaneID(), 20000, 5000);
 		
 		try {
 			reservationHandler.addReservation("RRR001", dateTime1, customer1, d1, TicketType.FIRSTCLASS, 200000);
@@ -173,9 +173,9 @@ class JUnitTestReservationListHandler {
 		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		
-		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD002", dateTime2, "London", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD003", dateTime3, "London", a3, 20000, 5000);
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "London", a2.getAirPlaneID(), 20000, 5000);
+		Departure d3 = new Departure("DDD003", dateTime3, "London", a3.getAirPlaneID(), 20000, 5000);
 		
 		try {
 			reservationHandler.addReservation("RRR001", dateTime1, customer1, d1, TicketType.FIRSTCLASS, 200000);
@@ -210,9 +210,9 @@ class JUnitTestReservationListHandler {
 		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 12:30", formatter);
 		
-		Departure d1 = new Departure("DDD001", dateTime1, "London", a1, 20000, 5000);
-		Departure d2 = new Departure("DDD002", dateTime2, "London", a2, 20000, 5000);
-		Departure d3 = new Departure("DDD003", dateTime3, "London", a3, 20000, 5000);
+		Departure d1 = new Departure("DDD001", dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		Departure d2 = new Departure("DDD002", dateTime2, "London", a2.getAirPlaneID(), 20000, 5000);
+		Departure d3 = new Departure("DDD003", dateTime3, "London", a3.getAirPlaneID(), 20000, 5000);
 		
 		HashMap<String, Reservation> newReservationList = new HashMap<String, Reservation>();
 		

@@ -45,7 +45,7 @@ public class FoodMenuItem {
 
 	@Override
 	public String toString() {
-		return "AirPlane [foodMenuID=" + foodMenuID + "]";
+		return "FoodMenuItem [foodMenuID:" + foodMenuID + " namn:" + this.name +" " + this.price + " " + this.isFirstClass + "]";
 	}
 
 	@Override
