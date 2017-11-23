@@ -10,9 +10,12 @@ public class FoodOrderListHandler {
   private static final String newFoodOrderItem = null;
   HashMap<String, FoodOrderItem> ourFoodOrderList = new HashMap<String, FoodOrderItem>(); 
  
-  public HashMap<String, FoodOrderItem> getFoodOrderList() { 
+  public HashMap<String, FoodOrderItem> getOurFoodOrderList() { 
     return ourFoodOrderList; 
   } 
+  
+  public void setOurFoodOrderItemList(HashMap<String, FoodOrderItem> ourFoodOrderItemList) {
+  }
    
   public HashMap<String, FoodOrderItem> getFoodOrderListEconomyClass(){ 
     HashMap<String, FoodOrderItem> economyClassFoodOrderList = new HashMap<String, FoodOrderItem>(); 
