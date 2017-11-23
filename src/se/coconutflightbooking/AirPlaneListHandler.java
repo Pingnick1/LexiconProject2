@@ -8,7 +8,8 @@ import se.coconutflightbooking.exceptions.AirPlaneNotFoundException;
 
 public class AirPlaneListHandler {
 	HashMap<String, AirPlane> ourAirPlaneList = new HashMap<String, AirPlane>();
-
+	String prefixReservationID = "AIR000";
+	
 	public HashMap<String, AirPlane> getOurAirPlaneList() {
 		return ourAirPlaneList;
 	}
@@ -65,12 +66,12 @@ public class AirPlaneListHandler {
 			return false;
 	}
 	
-	public boolean addAirPlaneToDB(AirPlane newAirPlane) {
+	public boolean addAirPlaneToDB(String newAirPlane) {
 	
 		return false;
 	}
 	
-	public boolean removeAirPlaneFromDB(AirPlane newAirPlane) {
+	public boolean removeAirPlaneFromDB(String newAirPlane) {
 		
 		return false;
 	}

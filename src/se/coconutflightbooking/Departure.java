@@ -7,18 +7,21 @@ public class Departure {
 	private String departureID;
 	private String destinationName;
 	private LocalDateTime departureDateTime;
-	private AirPlane airPlane;
+	private String airPlaneID;
 	private Integer firstClassTicketPrice;
 	private Integer economyClassTicketPrice;
+	
+	// TODO: Status variable
+	
 	//String str = "1986-04-08 12:30";
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
 
-	public Departure(String departureID, LocalDateTime departureDateTime, String destination, AirPlane airPlane, Integer firstClassTicketPrice, Integer economyClassTicketPrice) {
+	public Departure(String departureID, LocalDateTime departureDateTime, String destination, String airPlaneId, Integer firstClassTicketPrice, Integer economyClassTicketPrice) {
 		super();
 		this.departureID = departureID;
 		this.destinationName = destination;
 		this.departureDateTime = departureDateTime;
-		this.airPlane = airPlane;
+		this.airPlaneID = airPlaneId;
 		this.firstClassTicketPrice = firstClassTicketPrice;
 		this.economyClassTicketPrice = economyClassTicketPrice;
 	}
@@ -28,50 +31,32 @@ public class Departure {
 		return departureID;
 	}
 
-
-
-
 	public void setDepartureID(String departureID) {
 		this.departureID = departureID;
 	}
-
-
-
 
 	public String getDestinationName() {
 		return destinationName;
 	}
 
-
-
-
 	public void setDestinationName(String destinationName) {
 		this.destinationName = destinationName;
 	}
-
-
-
 
 	public LocalDateTime getDepartureDateTime() {
 		return departureDateTime;
 	}
 
-
-
-
 	public void setDepartureDateTime(LocalDateTime departureDateTime) {
 		this.departureDateTime = departureDateTime;
 	}
 
-
-
-
-	public AirPlane getAirPlaneBoundToDeparture() {
-		return this.airPlane;
+	public String getAirPlaneBoundToDeparture() {
+		return this.airPlaneID;
 	}
 
-	public void setAirPlaneToDeparture(AirPlane airPlane) {
-		this.airPlane = airPlane;
+	public void setAirPlaneToDeparture(String airPlane) {
+		this.airPlaneID = airPlane;
 	}
 
 	public Integer getFirstClassTicketPrice() {
@@ -92,7 +77,7 @@ public class Departure {
 
 	@Override
 	public String toString() {
-		return "DepartureID: "+ departureID + ", Date: " + this.departureDateTime.toString() + " Destination: " + this.destinationName + ", AirPlane: " + airPlane + ", firstClassTicketPrice="
+		return "DepartureID: "+ departureID + ", Date: " + this.departureDateTime + " Destination: " + this.destinationName + ", AirPlane: " + this.airPlaneID + ", firstClassTicketPrice="
 				+ firstClassTicketPrice + ", economyClassTicketPrice=" + economyClassTicketPrice + "]";
 	}
 
