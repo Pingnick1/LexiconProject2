@@ -7,22 +7,22 @@ import javax.swing.JFrame;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JRadioButton;
+//import javax.swing.JRadioButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
+//import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 import se.coconutflightbooking.DepartureListHandler;
 
 import javax.swing.JTable;
 import java.awt.Color;
 import javax.swing.JMenuBar;
-import java.awt.Canvas;
-import java.awt.Choice;
-import javax.swing.JSpinner;
-import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
-import javax.swing.JList;
+//import java.awt.Canvas;
+//import java.awt.Choice;
+//import javax.swing.JSpinner;
+//import javax.swing.JProgressBar;
+//import javax.swing.JTextArea;
+//import javax.swing.JList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.table.DefaultTableModel;
@@ -32,13 +32,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
-import javax.swing.border.CompoundBorder;
+//import javax.swing.border.TitledBorder;
+//import javax.swing.UIManager;
+//import javax.swing.border.CompoundBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JTextPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+//import javax.swing.JPanel;
+//import javax.swing.JTextField;
 
 public class WinBuildTest {
 
@@ -55,7 +55,7 @@ public class WinBuildTest {
 	
 	/**
 	 * Launch the application.
-	 */
+	 */ 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
