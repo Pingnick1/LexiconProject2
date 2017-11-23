@@ -1,4 +1,4 @@
-package se.coconutflightbooking.gui;
+package se.coconutflightbooking.gui; 
 
 import java.awt.EventQueue;
 
@@ -7,22 +7,22 @@ import javax.swing.JFrame;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-//import javax.swing.JRadioButton;
+import javax.swing.JRadioButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
-//import com.jgoodies.forms.factories.DefaultComponentFactory;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 import se.coconutflightbooking.DepartureListHandler;
 
 import javax.swing.JTable;
 import java.awt.Color;
 import javax.swing.JMenuBar;
-//import java.awt.Canvas;
-//import java.awt.Choice;
-//import javax.swing.JSpinner;
-//import javax.swing.JProgressBar;
-//import javax.swing.JTextArea;
-//import javax.swing.JList;
+import java.awt.Canvas;
+import java.awt.Choice;
+import javax.swing.JSpinner;
+import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
+import javax.swing.JList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.table.DefaultTableModel;
@@ -32,15 +32,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
-//import javax.swing.border.TitledBorder;
-//import javax.swing.UIManager;
-//import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JTextPane;
-//import javax.swing.JPanel;
-//import javax.swing.JTextField;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
 
-public class WinBuildTest {
+public class TestWindows {
 
 	private JFrame frmCoconutAirwaysBooking;
 	private JTable table;
@@ -49,9 +50,9 @@ public class WinBuildTest {
 	
 	//Our variables:
 	private Integer priceFood = 0;
-    private String foodName = "";
+    //private String foodName = "";
     private Integer priceTicket = 0;
-    private String departure = "";
+    //private String departure = "";
 	
 	/**
 	 * Launch the application.
@@ -60,7 +61,7 @@ public class WinBuildTest {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					WinBuildTest window = new WinBuildTest();
+					TestWindows window = new TestWindows();
 					window.frmCoconutAirwaysBooking.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -72,7 +73,7 @@ public class WinBuildTest {
 	/**
 	 * Create the application.
 	 */
-	public WinBuildTest() {
+	public TestWindows() {
 		initialize();
 	}
 
@@ -94,7 +95,7 @@ public class WinBuildTest {
 		
 		JLabel lblNewLabel_2 = new JLabel("Kund:");
 		
-		JTextPane textPane = new JTextPane();
+		JTextPane textPaneCustomer = new JTextPane();
 		
 		JLabel jLabelChosenDeparture = new JLabel("");
 		
@@ -115,6 +116,9 @@ public class WinBuildTest {
 		JLabel lblTotal = new JLabel("Total:");
 		
 		JLabel jLabelTotalPrice = new JLabel("0");
+		
+		JButton btnBoka = new JButton("Boka");
+		btnBoka.setEnabled(false);
 		GroupLayout groupLayout = new GroupLayout(frmCoconutAirwaysBooking.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -134,7 +138,7 @@ public class WinBuildTest {
 								.addComponent(jLabelFoodOrder, GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
 								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 									.addComponent(jLabelChosenDeparture, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(textPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)))
+									.addComponent(textPaneCustomer, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)))
 							.addGap(18)
 							.addComponent(lblNewLabel_1)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -152,7 +156,8 @@ public class WinBuildTest {
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(lblTotal, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(jLabelTotalPrice, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)))))
+									.addComponent(jLabelTotalPrice, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE))
+								.addComponent(btnBoka))))
 					.addContainerGap(243, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
@@ -163,7 +168,7 @@ public class WinBuildTest {
 					.addGap(45)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-						.addComponent(textPane, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textPaneCustomer, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addComponent(jLabelChosenClass, GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
@@ -187,7 +192,9 @@ public class WinBuildTest {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(jLabelTotalPrice, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(lblTotal, GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
-					.addGap(162))
+					.addGap(40)
+					.addComponent(btnBoka)
+					.addGap(99))
 		);
 		
 		table = new JTable();
@@ -197,12 +204,13 @@ public class WinBuildTest {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				//Integer priceTicket = 0;
+			    String departure = "";
 				
 				int departureIndex = table.rowAtPoint(e.getPoint());
 			    int flightClassIndex = table.columnAtPoint(e.getPoint());
 			    //System.out.println("mouseclick at: " + departureIndex + "," + flightClassIndex);
-			    String value = table.getValueAt(departureIndex, flightClassIndex).toString();
+			    //String value = table.getValueAt(departureIndex, flightClassIndex).toString();
 			    
 			    
 			    
@@ -227,7 +235,15 @@ public class WinBuildTest {
 			    	jLabelTicketPrice.setText(priceTicket.toString());
 				}
 			    Integer totalPrice = priceTicket+priceFood;
-			    jLabelTicketPrice.setText(totalPrice.toString());
+			    jLabelTotalPrice.setText(totalPrice.toString());
+			    
+			    if(jLabelFoodOrder.getText() != "" && jLabelChosenDeparture.getText() != "" && textPaneCustomer.getText().length() > 0) {
+			    	btnBoka.setEnabled(true);
+			    	System.out.println(textPaneCustomer.getText().length());
+			    }
+			    else {
+			    	btnBoka.setEnabled(false);
+			    }
 			    		    
 			}
 		});
@@ -260,7 +276,8 @@ public class WinBuildTest {
 		tableFoodMenu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				//Integer priceFood = 0;
+			    String foodName = "";
 				
 				int foodIndexRow = tableFoodMenu.rowAtPoint(e.getPoint());
 			    int foodIndexColumn= tableFoodMenu.columnAtPoint(e.getPoint());
@@ -274,22 +291,31 @@ public class WinBuildTest {
 			    
 			    else if (foodIndexColumn ==1 ) {
 			    	foodName = tableFoodMenu.getValueAt(foodIndexRow, foodIndexColumn-1).toString();
-			    	priceFood = (Integer) tableFoodMenu.getValueAt(foodIndexRow, foodIndexColumn-1);
+			    	priceFood = (Integer) tableFoodMenu.getValueAt(foodIndexRow, 1);
 			    	jLabelFoodOrder.setText(foodName);
 			    	
 			    }
 			    
 			    else if (foodIndexColumn ==2 ) {
 			    	foodName = tableFoodMenu.getValueAt(foodIndexRow, foodIndexColumn-2).toString();
-			    	priceFood = (Integer) tableFoodMenu.getValueAt(foodIndexRow, foodIndexColumn-2);
+			    	priceFood = (Integer) tableFoodMenu.getValueAt(foodIndexRow, 2);
 				    jLabelFoodOrder.setText(foodName);
 			    	
 				}
 			    
 			    Integer totalPrice = priceTicket+priceFood;
-			    jLabelTicketPrice.setText(totalPrice.toString());
+			    jLabelTotalPrice.setText(totalPrice.toString());
+			    
+			    if(jLabelFoodOrder.getText() != "" && jLabelChosenDeparture.getText() != "" && textPaneCustomer.getText().length() > 0) {
+			    	btnBoka.setEnabled(true);
+			    }
+			    else {
+			    	btnBoka.setEnabled(false);
+			    }
+			    	
 			}
 		});
+		
 		tableFoodMenu.setModel(new DefaultTableModel(
 			new Object[][] {
 				{"Maträtt:", "Pris Firstclass:", "Pris Economyclass:"},

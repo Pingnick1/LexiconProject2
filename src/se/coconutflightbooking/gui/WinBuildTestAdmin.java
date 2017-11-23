@@ -12,8 +12,8 @@ import javax.swing.JRadioButton;
 import javax.swing.GroupLayout.Alignment;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JSpinner;
+//import javax.swing.LayoutStyle.ComponentPlacement;
+//import javax.swing.JSpinner;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
