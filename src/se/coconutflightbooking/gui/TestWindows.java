@@ -12,7 +12,19 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
+import se.coconutflightbooking.AirPlane;
+import se.coconutflightbooking.AirPlaneListHandler;
+import se.coconutflightbooking.AirPlaneStatus;
+import se.coconutflightbooking.Departure;
 import se.coconutflightbooking.DepartureListHandler;
+import se.coconutflightbooking.FoodMenuItem;
+import se.coconutflightbooking.FoodMenuListHandler;
+import se.coconutflightbooking.FoodOrderItem;
+import se.coconutflightbooking.FoodOrderListHandler;
+import se.coconutflightbooking.Reservation;
+import se.coconutflightbooking.ReservationListHandler;
+import se.coconutflightbooking.database.OurDatabasConnection;
+import se.coconutflightbooking.exceptions.AirPlaneNotFoundException;
 
 import javax.swing.JTable;
 import java.awt.Color;
@@ -25,6 +37,11 @@ import javax.swing.JTextArea;
 import javax.swing.JList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
@@ -45,14 +62,101 @@ public class TestWindows extends JFrame{
 
 	private JFrame frmCoconutAirwaysBooking;
 	private JTable table;
-	private DepartureListHandler departures = new DepartureListHandler();
+	
 	private JTable tableFoodMenu;
 	
 	//Our variables:
-	private Integer priceFood = 0;
-    //private String foodName = "";
-    private Integer priceTicket = 0;
-    //private String departure = "";
+	public Integer costTicket = 0;
+	public Integer costFood = 0;
+	public Integer totalCost = 0;
+	
+	private OurDatabasConnection ourDataBasConnection = new OurDatabasConnection();
+	
+	private DepartureListHandler departures = new DepartureListHandler();
+	private ReservationListHandler reservationListHandler = new ReservationListHandler();
+	private FoodOrderListHandler foodOrderListHandler = new FoodOrderListHandler();
+	private FoodMenuListHandler foodMenuListHandler = new FoodMenuListHandler();
+	private AirPlaneListHandler airPlaneHandler = new AirPlaneListHandler();
+	
+	/*
+	HashMap<String, FoodMenuItem> foodMenu = ourDataBasConnection.getFoodMenu();
+	HashMap<String, Reservation> reservationList = ourDataBasConnection.getReservations();
+	HashMap<String, FoodOrderItem> foodOrderList = ourDataBasConnection.getFoodOrders();
+	HashMap<String, Departure> departureList = ourDataBasConnection.getDepartures();
+	HashMap<String, AirPlane> airPlaneList = ourDataBasConnection.getAirPlanes();
+	*/
+	
+	
+	
+	
+	
+	
+	private Object[][] getDepartures(){
+		 
+		
+		//Testkod
+		DepartureListHandler departureListHandler = new DepartureListHandler();
+		
+		AirPlane a1 = new AirPlane("CCN000001", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a2 = new AirPlane("CCN000002", 5, 5, AirPlaneStatus.HANGAR);
+		AirPlane a3 = new AirPlane("CCN000003", 5, 5, AirPlaneStatus.HANGAR);
+		
+		airPlaneHandler.addAirPlane(a1);
+		airPlaneHandler.addAirPlane(a2);
+		airPlaneHandler.addAirPlane(a3);
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+		
+		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
+		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
+		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
+		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
+		
+		departureListHandler.addDeparture(dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime3, "Panama", a3.getAirPlaneID(), 20000, 5000);
+		departureListHandler.addDeparture(dateTime4, "New York", a1.getAirPlaneID(), 20000, 5000);
+		//------
+		
+		HashMap<String, Departure> result = departureListHandler.getDepartureList(); //new HashMap<String, Departure>; 
+		
+		int rows = departureListHandler.size();
+		Object[][] returnArray = new Object[rows+1][6];
+		
+		for(int rowCounter = 1; rowCounter < rows; ) {
+			 
+			Object[] headerArray = {"DATE:", "DESTINATION", "FIRSTCLASS PLATSER", "PRIS(SEK)", "ECONOMYCLASS", "PRIS(SEK)"};
+			returnArray[0] = headerArray;
+		
+		
+			for(Departure departure : result.values()) {
+				Object[] columnArray = new Object[6];
+				columnArray[0] = departure.getDepartureDateTime().toString();
+				columnArray[1] = departure.getDestinationName().toString();
+			
+				try {
+					columnArray[2] = airPlaneHandler.getAirPlane(departure.getAirPlaneBoundToDeparture()).getNrOfFirstClass();// .toString();
+				} catch (AirPlaneNotFoundException e) {
+					e.printStackTrace();
+				}
+				columnArray[3] = departure.getFirstClassTicketPrice();//.toString();
+			
+				try {
+					columnArray[4] = airPlaneHandler.getAirPlane(departure.getAirPlaneBoundToDeparture()).getNrOfEconomcSeats(); //.toString();
+				} catch (AirPlaneNotFoundException e) {
+					e.printStackTrace();
+				}
+				columnArray[5] = departure.getEconomyClassTicketPrice();
+			
+				returnArray[rowCounter] = columnArray;
+				rowCounter++;
+			}
+			
+		}
+		
+		return returnArray;
+	}
+
 	
 	/**
 	 * Launch the application.
@@ -205,37 +309,33 @@ public class TestWindows extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Integer priceTicket = 0;
+				//Integer priceFood = 0;
 			    String departure = "";
 				
 				int departureIndex = table.rowAtPoint(e.getPoint());
 			    int flightClassIndex = table.columnAtPoint(e.getPoint());
-			    //System.out.println("mouseclick at: " + departureIndex + "," + flightClassIndex);
-			    //String value = table.getValueAt(departureIndex, flightClassIndex).toString();
-			    
-			    
-			    
 			    
 			    if ( flightClassIndex == 0 || departureIndex == 0) {   }
-			    else if (flightClassIndex ==1 || flightClassIndex == 2) {
+			    else if (flightClassIndex ==2 || flightClassIndex == 3) {
 			    	//System.out.println("Flight:" + departureIndex + ", Första klass, value:" + value);
 			    	departure = table.getValueAt(departureIndex, 0).toString();
-			    	priceTicket = (Integer) table.getValueAt(departureIndex, 2);
+			    	TestWindows.this.costTicket = (Integer) table.getValueAt(departureIndex, 3);
 			    	
 			    	jLabelChosenDeparture.setText(departure);
 			    	jLabelChosenClass.setText("Första klass");
-			    	jLabelTicketPrice.setText(priceTicket.toString());
+			    	jLabelTicketPrice.setText(TestWindows.this.costTicket.toString());
 			    	
 			    }
-			    else if (flightClassIndex ==3 || flightClassIndex == 4 ) {
+			    else if (flightClassIndex ==4 || flightClassIndex == 5 ) {
 			    	departure = table.getValueAt(departureIndex, 0).toString();
-			    	priceTicket = (Integer) table.getValueAt(departureIndex, 4);
-				    //System.out.println("Flight:" + departureIndex + ", Ekonomiklass, value:" + value);
+			    	TestWindows.this.costTicket = (Integer) table.getValueAt(departureIndex, 5);
+			    	
 			    	jLabelChosenDeparture.setText(departure);
 			    	jLabelChosenClass.setText("Ekonomiklass");
-			    	jLabelTicketPrice.setText(priceTicket.toString());
+			    	jLabelTicketPrice.setText(TestWindows.this.costTicket.toString());
 				}
-			    Integer totalPrice = priceTicket+priceFood;
-			    jLabelTotalPrice.setText(totalPrice.toString());
+			    TestWindows.this.totalCost = TestWindows.this.costTicket + TestWindows.this.costFood;
+			    jLabelTotalPrice.setText(TestWindows.this.totalCost.toString());
 			    
 			    if(jLabelFoodOrder.getText() != "" && jLabelChosenDeparture.getText() != "" && textPaneCustomer.getText().length() > 0) {
 			    	btnBoka.setEnabled(true);
@@ -249,24 +349,11 @@ public class TestWindows extends JFrame{
 		});
 		table.setCellSelectionEnabled(true);
 		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"FLIGHT:", "FIRSTCLASS PLATSER", "PRIS(SEK)", "ECONOMYCLASS", "PRIS(SEK)"},
-				{"SK161 G\u00F6teborg 14.45", new Integer(2), new Integer(20000), new Integer(2), new Integer(5000)},
-				{"SK161 G\u00F6teborg 14.45", new Integer(2), new Integer(20000), new Integer(2), new Integer(5000)},
-				{"SK161 G\u00F6teborg 14.45", new Integer(2), new Integer(20000), new Integer(2), new Integer(5000)},
-				{"SK161 G\u00F6teborg 14.45", new Integer(2), new Integer(20000), new Integer(5), new Integer(5000)},
-				{"SK161 G\u00F6teborg 14.45", new Integer(7), new Integer(20000), new Integer(2), new Integer(5000)},
-				{"SK161 G\u00F6teborg 14.45", new Integer(2), new Integer(20000), new Integer(2), new Integer(5000)},
-				{"SK162 G\u00F6teborg 16.45", new Integer(2), new Integer(20000), new Integer(4), new Integer(5000)},
-				{"SK161 G\u00F6teborg 14.45", new Integer(1), new Integer(20000), new Integer(2), new Integer(5000)},
-				{"SK161 G\u00F6teborg 18.45", new Integer(2), new Integer(20000), new Integer(2), new Integer(5000)},
-				{"SK161 G\u00F6teborg 14.45", new Integer(0), new Integer(20000), new Integer(2), new Integer(5000)},
-				{null, null, null, null, null},
-			},
-			new String[] {
-				"Flight", "First Class", "Economy", "New column", "New column"
-			}
-		));
+				this.getDepartures(),
+				new String[] {
+						"Date", "Destination", "First Class", "Economy", "New column", "New column"
+				}
+		));	
 		table.getColumnModel().getColumn(0).setPreferredWidth(220);
 		table.getColumnModel().getColumn(0).setMinWidth(175);
 		
@@ -278,6 +365,7 @@ public class TestWindows extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				//Integer priceFood = 0;
 			    String foodName = "";
+			    //Integer priceTicket = 0;
 				
 				int foodIndexRow = tableFoodMenu.rowAtPoint(e.getPoint());
 			    int foodIndexColumn= tableFoodMenu.columnAtPoint(e.getPoint());
@@ -291,20 +379,21 @@ public class TestWindows extends JFrame{
 			    
 			    else if (foodIndexColumn ==1 ) {
 			    	foodName = tableFoodMenu.getValueAt(foodIndexRow, foodIndexColumn-1).toString();
-			    	priceFood = (Integer) tableFoodMenu.getValueAt(foodIndexRow, 1);
+			    	TestWindows.this.costFood = (Integer) tableFoodMenu.getValueAt(foodIndexRow, 1);
 			    	jLabelFoodOrder.setText(foodName);
+			    	jLabelFoodCost.setText(TestWindows.this.costFood.toString());
 			    	
 			    }
 			    
 			    else if (foodIndexColumn ==2 ) {
 			    	foodName = tableFoodMenu.getValueAt(foodIndexRow, foodIndexColumn-2).toString();
-			    	priceFood = (Integer) tableFoodMenu.getValueAt(foodIndexRow, 2);
+			    	TestWindows.this.costFood = (Integer) tableFoodMenu.getValueAt(foodIndexRow, 2);
 				    jLabelFoodOrder.setText(foodName);
-			    	
+				    jLabelFoodCost.setText(TestWindows.this.costFood.toString());
 				}
 			    
-			    Integer totalPrice = priceTicket+priceFood;
-			    jLabelTotalPrice.setText(totalPrice.toString());
+			    TestWindows.this.totalCost = TestWindows.this.costTicket + TestWindows.this.costFood;
+			    jLabelTotalPrice.setText(TestWindows.this.totalCost.toString());
 			    
 			    if(jLabelFoodOrder.getText() != "" && jLabelChosenDeparture.getText() != "" && textPaneCustomer.getText().length() > 0) {
 			    	btnBoka.setEnabled(true);
@@ -332,6 +421,9 @@ public class TestWindows extends JFrame{
 			}
 		));
 		tabbedPane.addTab("Food Menu", null, tableFoodMenu, null);
+		
+		JTabbedPane tabBokningar = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.addTab("Bokningar", null, tabBokningar, null);
 		frmCoconutAirwaysBooking.getContentPane().setLayout(groupLayout);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -360,4 +452,6 @@ public class TestWindows extends JFrame{
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
 	}
+	
+	
 }
