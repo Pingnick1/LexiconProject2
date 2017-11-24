@@ -79,14 +79,6 @@ public class TestWindows extends JFrame{
 	private FoodMenuListHandler foodMenuListHandler = new FoodMenuListHandler();
 	
 	
-	
-	
-	
-	//{HashMap<String, Departure> departureList = ourDataBasConnection.getDepartures();}
-	
-	
-	
-	
 	public Object[][] getDepartures(){		
 		//System.out.println( airPlaneHandler);
 		HashMap<String, Departure> result = TestWindows.this.departuresListHandler.getDepartureList();
@@ -159,6 +151,15 @@ public class TestWindows extends JFrame{
 		initialize();
 	}
 
+	
+	public void upDateFromDB() {
+		departuresListHandler.setDepartureList(ourDataBasConnection.getDepartures());
+		table.repaint();
+		repaint();
+		
+	}
+	
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -219,6 +220,13 @@ public class TestWindows extends JFrame{
 		
 		JButton btnBoka = new JButton("Boka");
 		btnBoka.setEnabled(false);
+		
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TestWindows.this.upDateFromDB();
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frmCoconutAirwaysBooking.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -228,22 +236,28 @@ public class TestWindows extends JFrame{
 							.addGap(80)
 							.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 643, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(32)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-								.addComponent(lblNewLabel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(jLabelFoodOrder, GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(jLabelChosenDeparture, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(textPaneCustomer, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)))
-							.addGap(18)
-							.addComponent(lblNewLabel_1)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(jLabelChosenClass, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(32)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+										.addComponent(lblNewLabel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(jLabelFoodOrder, GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+											.addComponent(jLabelChosenDeparture, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(textPaneCustomer, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)))
+									.addGap(18)
+									.addComponent(lblNewLabel_1)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(jLabelChosenClass, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED))
+								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+									.addContainerGap()
+									.addComponent(btnUpdate)
+									.addGap(18)))
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(lblPris, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
@@ -293,7 +307,9 @@ public class TestWindows extends JFrame{
 						.addComponent(jLabelTotalPrice, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(lblTotal, GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
 					.addGap(40)
-					.addComponent(btnBoka)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnBoka)
+						.addComponent(btnUpdate))
 					.addGap(99))
 		);
 		
@@ -304,6 +320,7 @@ public class TestWindows extends JFrame{
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				upDateFromDB();
 				//Integer priceTicket = 0;
 				//Integer priceFood = 0;
 			    String departure = "";
@@ -448,6 +465,4 @@ public class TestWindows extends JFrame{
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
 	}
-	
-	
 }
