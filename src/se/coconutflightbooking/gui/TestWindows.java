@@ -72,55 +72,25 @@ public class TestWindows extends JFrame{
 	
 	private OurDatabasConnection ourDataBasConnection = new OurDatabasConnection();
 	
-	private DepartureListHandler departures = new DepartureListHandler();
+	private AirPlaneListHandler airPlaneHandler = new AirPlaneListHandler();
+	private DepartureListHandler departuresListHandler = new DepartureListHandler();
 	private ReservationListHandler reservationListHandler = new ReservationListHandler();
 	private FoodOrderListHandler foodOrderListHandler = new FoodOrderListHandler();
 	private FoodMenuListHandler foodMenuListHandler = new FoodMenuListHandler();
-	private AirPlaneListHandler airPlaneHandler = new AirPlaneListHandler();
-	
-	/*
-	HashMap<String, FoodMenuItem> foodMenu = ourDataBasConnection.getFoodMenu();
-	HashMap<String, Reservation> reservationList = ourDataBasConnection.getReservations();
-	HashMap<String, FoodOrderItem> foodOrderList = ourDataBasConnection.getFoodOrders();
-	HashMap<String, Departure> departureList = ourDataBasConnection.getDepartures();
-	HashMap<String, AirPlane> airPlaneList = ourDataBasConnection.getAirPlanes();
-	*/
 	
 	
 	
 	
 	
+	//{HashMap<String, Departure> departureList = ourDataBasConnection.getDepartures();}
 	
-	private Object[][] getDepartures(){
-		 
-		
-		//Testkod
-		DepartureListHandler departureListHandler = new DepartureListHandler();
-		
-		AirPlane a1 = new AirPlane("CCN000001", 5, 5, AirPlaneStatus.HANGAR);
-		AirPlane a2 = new AirPlane("CCN000002", 5, 5, AirPlaneStatus.HANGAR);
-		AirPlane a3 = new AirPlane("CCN000003", 5, 5, AirPlaneStatus.HANGAR);
-		
-		airPlaneHandler.addAirPlane(a1);
-		airPlaneHandler.addAirPlane(a2);
-		airPlaneHandler.addAirPlane(a3);
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
-		
-		LocalDateTime dateTime1 = LocalDateTime.parse("2017-11-25 12:30", formatter);
-		LocalDateTime dateTime2 = LocalDateTime.parse("2017-11-25 16:30", formatter);
-		LocalDateTime dateTime3 = LocalDateTime.parse("2017-11-25 17:30", formatter);
-		LocalDateTime dateTime4 = LocalDateTime.parse("2017-11-25 18:30", formatter);
-		
-		departureListHandler.addDeparture(dateTime1, "London", a1.getAirPlaneID(), 20000, 5000);
-		departureListHandler.addDeparture(dateTime2, "Bombay", a2.getAirPlaneID(), 20000, 5000);
-		departureListHandler.addDeparture(dateTime3, "Panama", a3.getAirPlaneID(), 20000, 5000);
-		departureListHandler.addDeparture(dateTime4, "New York", a1.getAirPlaneID(), 20000, 5000);
-		//------
-		
-		HashMap<String, Departure> result = departureListHandler.getDepartureList(); //new HashMap<String, Departure>; 
-		
-		int rows = departureListHandler.size();
+	
+	
+	
+	public Object[][] getDepartures(){		
+		//System.out.println( airPlaneHandler);
+		HashMap<String, Departure> result = TestWindows.this.departuresListHandler.getDepartureList();
+		int rows = result.size();
 		Object[][] returnArray = new Object[rows+1][6];
 		
 		for(int rowCounter = 1; rowCounter < rows; ) {
@@ -135,16 +105,22 @@ public class TestWindows extends JFrame{
 				columnArray[1] = departure.getDestinationName().toString();
 			
 				try {
-					columnArray[2] = airPlaneHandler.getAirPlane(departure.getAirPlaneBoundToDeparture()).getNrOfFirstClass();// .toString();
+					columnArray[2] = this.airPlaneHandler.getAirPlane(departure.getAirPlaneBoundToDeparture()).getNrOfFirstClass();// .toString();
+					//System.out.println("Letar efter flygplan:" + departure.getAirPlaneBoundToDeparture());
 				} catch (AirPlaneNotFoundException e) {
-					e.printStackTrace();
+					System.out.println("AirPlaneNotFoundException");
+					//System.out.println("Letar efter flygplan:" + departure.getAirPlaneBoundToDeparture());
+					//e.printStackTrace();
 				}
 				columnArray[3] = departure.getFirstClassTicketPrice();//.toString();
 			
 				try {
-					columnArray[4] = airPlaneHandler.getAirPlane(departure.getAirPlaneBoundToDeparture()).getNrOfEconomcSeats(); //.toString();
+					columnArray[4] = this.airPlaneHandler.getAirPlane(departure.getAirPlaneBoundToDeparture()).getNrOfEconomcSeats(); //.toString();
+					//System.out.println("Letar efter flygplan:" + departure.getAirPlaneBoundToDeparture());
 				} catch (AirPlaneNotFoundException e) {
-					e.printStackTrace();
+					System.out.println("AirPlaneNotFoundException");
+					//System.out.println("Letar efter flygplan:" + departure.getAirPlaneBoundToDeparture());
+					//e.printStackTrace();
 				}
 				columnArray[5] = departure.getEconomyClassTicketPrice();
 			
@@ -162,9 +138,11 @@ public class TestWindows extends JFrame{
 	 * Launch the application.
 	 */ 
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					TestWindows window = new TestWindows();
 					window.frmCoconutAirwaysBooking.setVisible(true);
 				} catch (Exception e) {
@@ -185,6 +163,24 @@ public class TestWindows extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		airPlaneHandler.setOurAirPlaneList(ourDataBasConnection.getAirPlanes());
+		//HashMap<String, AirPlane> airPlaneList = ourDataBasConnection.getAirPlanes();
+		
+		departuresListHandler.setDepartureList(ourDataBasConnection.getDepartures());
+		
+		reservationListHandler.setReservationList(ourDataBasConnection.getReservations());
+		
+		foodOrderListHandler.setOurFoodOrderList(ourDataBasConnection.getFoodOrders());
+		
+		foodMenuListHandler.setOurFoodMenuList(ourDataBasConnection.getFoodMenu());
+		
+		//HashMap<String, FoodMenuItem> foodMenu = ourDataBasConnection.getFoodMenu();
+		//HashMap<String, Reservation> reservationList = ourDataBasConnection.getReservations();
+		//HashMap<String, FoodOrderItem> foodOrderList = ourDataBasConnection.getFoodOrders();
+		
+		//departuresListHandler.setOurAirPlaneList(airPlaneList);
+		
+		
 		frmCoconutAirwaysBooking = new JFrame();
 		frmCoconutAirwaysBooking.setTitle("Coconut Airways Booking");
 		frmCoconutAirwaysBooking.getContentPane().setBackground(new Color(135, 206, 250));
