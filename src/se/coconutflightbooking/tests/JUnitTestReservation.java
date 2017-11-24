@@ -41,7 +41,7 @@ class JUnitTestReservation {
 		Departure d1 = new Departure("", dateTime1, "London", a1.getAirPlaneID(), 20000,5000);
 		Departure d2 = new Departure("", dateTime2, "Madrid", a2.getAirPlaneID(), 20000,5000);
 		
-		Reservation r1 = new Reservation("CCNB001", dateTime3, "Niklas Svensson", d1, TicketType.ECONOMYCLASS, 5000);
+		Reservation r1 = new Reservation("CCNB001", dateTime3, "Niklas Svensson", d1.getDepartureID(), TicketType.ECONOMYCLASS, 5000);
 		//Reservation r2 = new Reservation("CCNB002", "David Svensson", d1, TicketType.FIRSTCLASS, 20000);
 		
 		/*
@@ -55,7 +55,7 @@ class JUnitTestReservation {
 		System.out.println(r1);
 		
 		r1.setReservationStatus(ReservationStatus.USED);
-		r1.setDeparture(d2);
+		r1.setDeparture(d2.getDepartureID());
 		r1.setTicketCost(20000);
 		r1.setTicketType(TicketType.FIRSTCLASS);
 		r1.setCustomer("Lars Åkesson");

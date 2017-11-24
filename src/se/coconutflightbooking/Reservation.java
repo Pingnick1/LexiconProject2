@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Reservation {
 	private String reservationID;
-	private Departure departure;
+	private String departureID;
 	//FoodOrderList foodOrderList;
 	//Customer customer;
 	String customer;
@@ -30,10 +30,10 @@ public class Reservation {
 	 * @param ticketType
 	 * @param ticketCost
 	 */
-	public Reservation(String bookingID, LocalDateTime reservationDateTime, String customer, Departure departure, TicketType ticketType, int ticketCost){
+	public Reservation(String bookingID, LocalDateTime reservationDateTime, String customer, String departureID, TicketType ticketType, int ticketCost){
 		this.reservationID = bookingID;
 		this.reservationDateTime = reservationDateTime;
-		this.departure = departure;
+		this.departureID = departureID;
 		this.customer = customer;
 		this.ticketType = ticketType;
 		this.reservationStatus = ReservationStatus.PAYED;	
@@ -48,10 +48,10 @@ public class Reservation {
 	 * @param ticketType
 	 * @param ticketCost
 	 */
-	public Reservation(String bookingID, String customer, Departure departure, TicketType ticketType, int ticketCost){
+	public Reservation(String bookingID, String customer, String departureID, TicketType ticketType, int ticketCost){
 		this.reservationID = bookingID;
 		this.reservationDateTime = LocalDateTime.now();
-		this.departure = departure;
+		this.departureID = departureID;
 		this.customer = customer;
 		this.ticketType = ticketType;
 		this.reservationStatus = ReservationStatus.PAYED;	
@@ -68,15 +68,15 @@ public class Reservation {
 	/**
 	 * @return the departure
 	 */
-	public Departure getDeparture() {
-		return departure;
+	public String getDeparture() {
+		return departureID;
 	}
 
 	/**
 	 * @param departure the departure to set
 	 */
-	public void setDeparture(Departure departure) {
-		this.departure = departure;
+	public void setDeparture(String departure) {
+		this.departureID = departure;
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class Reservation {
 	 */
 	@Override
 	public String toString() {
-		return "Reservation [Reservation ID:" + reservationID + ", ReservationDate: " + reservationDateTime + ", departure=" + departure + ", customer=" + customer
+		return "Reservation [Reservation ID:" + reservationID + ", ReservationDate: " + reservationDateTime + ", departure=" + departureID + ", customer=" + customer
 				+ ", reservationStatus=" + reservationStatus + ", ticketType=" + ticketType + ", ticketCost="
 				+ ticketCost + "]";
 	}

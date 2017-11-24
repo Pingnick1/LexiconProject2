@@ -15,6 +15,9 @@ import se.coconutflightbooking.AirPlane;
 import se.coconutflightbooking.AirPlaneStatus;
 import se.coconutflightbooking.Departure;
 import se.coconutflightbooking.FoodMenuItem;
+import se.coconutflightbooking.FoodOrderItem;
+import se.coconutflightbooking.Reservation;
+import se.coconutflightbooking.TicketType;
 
 public class OurDatabasConnection {
 	private Connection conn = null;
@@ -90,9 +93,17 @@ public class OurDatabasConnection {
 			System.out.println(foodMenuItem);
 		}
 		
+		HashMap<String, Reservation> reservationList = dbConnection.getReservations(); 
 		
+		for(Reservation reservationItem : reservationList.values()) {
+			System.out.println(reservationItem);
+		}
 		
+		HashMap<String, FoodOrderItem> foodorderList = dbConnection.getFoodOrders(); 
 		
+		for(FoodOrderItem foodorderItem : foodorderList.values()) {
+			System.out.println(foodorderItem);
+		}
 	}
 	
 	public HashMap<String, AirPlane> getAirPlanes(){
@@ -139,39 +150,21 @@ public class OurDatabasConnection {
 		String sql = "SELECT * FROM \"USER\".\"DEPARTURES\""; // SELECT * FROM "USER"."DEPARTURES";
 		try {		
 			try (Connection conn = DriverManager.getConnection("jdbc:derby://localhost:50000/Coconut")) {
-				//System.out.println("Connection");
 				try(Statement stm = conn.createStatement()){
-					//System.out.println("Statement");
-					try(ResultSet rs = stm.executeQuery(sql)){
-						//System.out.println("ResultSet:" + sql + " rader:" + rs.getFetchSize());
-						
+					try(ResultSet rs = stm.executeQuery(sql)){						
 						while (rs.next()) {
-							//System.out.println("Hello1");
-
 							String departureID = rs.getString("DEPARTURE_ID");
-							//System.out.println("Hello2" + departureID);
 							String departureDateTime = rs.getString("DEPARTURE_DATETIME").substring(0, 19);
-							//System.out.println("Hello3" + departureDateTime);
 							String airPlaneID = rs.getString("AIRPLANE_ID");
-							//System.out.println("Hello4" + airPlaneID);
 							String destination = rs.getString("DESTINATION");
-							//System.out.println("Hello5" + destination);
 							Integer economicTicketPrice = rs.getInt("ECONOMIC_TICKET_PRICE");
-							//System.out.println("Hello6" + economicTicketPrice);
 							Integer firstClassTicketPrice = rs.getInt("FIRSTCLASS_TICKET_PRICE");
-							//System.out.println("Hello7" + firstClassTicketPrice);
 							
 							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
 							LocalDateTime dateTime = LocalDateTime.parse(departureDateTime, formatter);
 							
-							//System.out.println("Hello8" + dateTime.toString());
-							
-							//System.out.println(departureID + " " + departureDateTime + " " + airPlaneID + " " + destination + " " + economicTicketPrice + " " + firstClassTicketPrice);
-							
 							Departure departure = new Departure(departureID, dateTime, destination, airPlaneID,  firstClassTicketPrice, economicTicketPrice);
-							
-							//System.out.println(departure);
-							
+														
 							departureList.put(departureID, departure);
 						}	
 					}
@@ -197,21 +190,16 @@ public class OurDatabasConnection {
 		String sql = "Select * from \"USER\".\"FOODMENU\"";
 		try {		
 			try (Connection conn = DriverManager.getConnection("jdbc:derby://localhost:50000/Coconut")) {
-				//System.out.println("Connection");
 				try(Statement stm = conn.createStatement()){
-					//System.out.println("Statement");
 					try(ResultSet rs = stm.executeQuery(sql)){
-						//System.out.println("ResultSet:" + sql + " rader:" + rs.getFetchSize());
 						while (rs.next()) {
 							String foodMenuID = rs.getString("FOODMENU_ID");
 							String name = rs.getString("NAME");
 							Integer price = rs.getInt("PRICE");
 							boolean isFirstClass = rs.getBoolean("IS_FIRSTCLASS");
 						
-							
 							FoodMenuItem foodMenuItem = new FoodMenuItem(foodMenuID, name, price, isFirstClass);
 														
-							//System.out.println(airPlaneID + " " + name + " " + economic_seat_amount + " " + firstclass_seat_amount + " " + status);
 							foodMenuList.put(foodMenuID, foodMenuItem);
 						}	
 					}
@@ -231,6 +219,81 @@ public class OurDatabasConnection {
 		return null;
 	}
 	
+	
+	public HashMap<String, Reservation> getReservations(){
+		HashMap<String, Reservation> reservationList = new HashMap<String, Reservation>(); 
+		String sql = "Select * from \"USER\".\"RESERVATIONS\"";
+		try {		
+			try (Connection conn = DriverManager.getConnection("jdbc:derby://localhost:50000/Coconut")) {
+				try(Statement stm = conn.createStatement()){
+					try(ResultSet rs = stm.executeQuery(sql)){
+						while (rs.next()) {
+							String reservationID = rs.getString("RESERVATION_ID");
+							String reservationDateTime = rs.getString("RESERVATION_DATETIME").substring(0, 19);
+							String customerName = rs.getString("CUSTOMER_NAME");
+							String departureId = rs.getString("DEPARTURE_ID");
+							TicketType ticketType = TicketType.valueOf(rs.getString("TICKET_TYPE"));
+							Integer ticketCost = rs.getInt("COST");
+														
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+							LocalDateTime dateTime = LocalDateTime.parse(reservationDateTime, formatter);
+							
+							Reservation reservation = new Reservation(reservationID, dateTime,  customerName, departureId, ticketType, ticketCost);
+							
+							reservationList.put(reservationID, reservation);
+						}	
+					}
+					finally {
+						if (stm != null) stm.close();
+						if (conn != null) conn.close();
+						return reservationList;
+					}
+				}
+			}	
+		}
+		catch (SQLException e) {
+
+			System.out.println("Something went wrong");
+			System.out.println(e);
+		}
+		return null;
+	}
+	
+	
+	public HashMap<String, FoodOrderItem> getFoodOrders(){
+		HashMap<String, FoodOrderItem> foodOrderList = new HashMap<String, FoodOrderItem>(); 
+		String sql = "Select * from \"USER\".\"FOODORDER\"";
+		try {		
+			try (Connection conn = DriverManager.getConnection("jdbc:derby://localhost:50000/Coconut")) {
+				try(Statement stm = conn.createStatement()){
+					try(ResultSet rs = stm.executeQuery(sql)){
+						while (rs.next()) {
+							String foodorderID = rs.getString("FOODORDER_ID");
+							String reservationID = rs.getString("RESERVATION_ID");
+							String foodMenuId = rs.getString("FOODMENU_ID");
+							boolean isFirstClass = rs.getBoolean("IS_FIRSTCLASS");
+							Integer cost = rs.getInt("COST");								
+							
+							FoodOrderItem foodorder = new FoodOrderItem(foodorderID, reservationID, foodMenuId, isFirstClass, cost);
+							
+							foodOrderList.put(foodorderID, foodorder);
+						}	
+					}
+					finally {
+						if (stm != null) stm.close();
+						if (conn != null) conn.close();
+						return foodOrderList;
+					}
+				}
+			}	
+		}
+		catch (SQLException e) {
+
+			System.out.println("Something went wrong");
+			System.out.println(e);
+		}
+		return null;
+	}
 	
 	private void createTable() {
 		

@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class FoodOrderListHandler {
 
 		 
-  private static final String newFoodOrderItem = null;
+  //private static final String newFoodOrderItem = null;
   HashMap<String, FoodOrderItem> ourFoodOrderList = new HashMap<String, FoodOrderItem>(); 
  
   public HashMap<String, FoodOrderItem> getOurFoodOrderList() { 

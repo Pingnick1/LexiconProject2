@@ -121,7 +121,7 @@ public class ReservationListHandler {
 	public boolean addReservation(String customer, Departure departure, TicketType ticketType, Integer ticketCost)  {
 		String reservationID = this.getNextUniqueReservationID();
 		LocalDateTime reservationDateTime = LocalDateTime.now(); 
-		Reservation newReservation = new Reservation(reservationID, reservationDateTime, customer, departure, ticketType, ticketCost);
+		Reservation newReservation = new Reservation(reservationID, reservationDateTime, customer, departure.getDepartureID(), ticketType, ticketCost);
 		this.reservationList.put(newReservation.getReservationID(), newReservation);
 		
 		Reservation result = this.reservationList.get(newReservation.getReservationID());
@@ -145,7 +145,7 @@ public class ReservationListHandler {
 	 * @throws ReservationAlreadyExistInListException
 	 */
 	public boolean addReservation(String reservationID, LocalDateTime reservationDateTime, String customer, Departure departure, TicketType ticketType, Integer ticketCost) throws ReservationAlreadyExistInListException  {
-		Reservation newReservation = new Reservation(reservationID, reservationDateTime, customer, departure, ticketType, ticketCost);
+		Reservation newReservation = new Reservation(reservationID, reservationDateTime, customer, departure.getDepartureID(), ticketType, ticketCost);
 		
 		if(this.addReservation(newReservation))
 			return true;						
