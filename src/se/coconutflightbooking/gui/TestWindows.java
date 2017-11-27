@@ -23,6 +23,7 @@ import se.coconutflightbooking.FoodOrderItem;
 import se.coconutflightbooking.FoodOrderListHandler;
 import se.coconutflightbooking.Reservation;
 import se.coconutflightbooking.ReservationListHandler;
+import se.coconutflightbooking.database.CoconutFlightDBHandler;
 import se.coconutflightbooking.database.OurDatabasConnection;
 import se.coconutflightbooking.exceptions.AirPlaneNotFoundException;
 
@@ -70,7 +71,8 @@ public class TestWindows extends JFrame{
 	public Integer costFood = 0;
 	public Integer totalCost = 0;
 	
-	private OurDatabasConnection ourDataBasConnection = new OurDatabasConnection();
+	//private OurDatabasConnection ourDataBasConnection = new OurDatabasConnection();
+	private CoconutFlightDBHandler ourDataBasConnection = new CoconutFlightDBHandler();
 	
 	private AirPlaneListHandler airPlaneHandler = new AirPlaneListHandler();
 	private DepartureListHandler departuresListHandler = new DepartureListHandler();

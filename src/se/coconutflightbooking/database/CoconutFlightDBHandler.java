@@ -18,20 +18,17 @@ import se.coconutflightbooking.TicketType;
 public class CoconutFlightDBHandler extends OurDatabasConnection {
 
 	public CoconutFlightDBHandler() {
-		// TODO Auto-generated constructor stub
+		super("localhost", "50000", "Coconut");
+		
 	}
 	
-	
-	
-	
+
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		System.out.println("Hello World");
 		
-		OurDatabasConnection dbConnection = new OurDatabasConnection();
-		
-		
-		
+		CoconutFlightDBHandler dbConnection = new CoconutFlightDBHandler();
+
+		// Collect and print Departure from DB
 		HashMap<String, Departure> departureList = dbConnection.getDepartures(); 
 		
 		for(Departure departure : departureList.values()) {
@@ -40,14 +37,14 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		
 				
 		
-		
+		// Collect and print AirPlane from DB
 		HashMap<String, AirPlane> airPlaneList = dbConnection.getAirPlanes(); 
 		
 		for(AirPlane plane : airPlaneList.values()) {
 			System.out.println(plane);
 		}
 		
-
+		// Collect and print FoodMenuItem from DB
 		HashMap<String, FoodMenuItem> foodMenuList = dbConnection.getFoodMenu(); 
 		
 		for(FoodMenuItem foodMenuItem : foodMenuList.values()) {
@@ -55,7 +52,7 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		}
 		
 		
-		
+		// Collect and print Reservation from DB
 		HashMap<String, Reservation> reservationList = dbConnection.getReservations(); 
 		
 		for(Reservation reservationItem : reservationList.values()) {
@@ -63,7 +60,7 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		}
 		
 		
-		
+		// Collect and print FoodOrderItem from DB
 		HashMap<String, FoodOrderItem> foodorderList = dbConnection.getFoodOrders(); 
 		
 		for(FoodOrderItem foodorderItem : foodorderList.values()) {
