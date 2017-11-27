@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class OurDatabasConnection {
 	private Connection conn = null;
@@ -84,39 +85,68 @@ public class OurDatabasConnection {
 	
 	}
 	
-	public void addData(String airPlaneID, String name, int economicSeatAmount, int firstClassSeatAmount, String status, String tableName) {
+	public void addData(HashMap<String, Object> addArray, String tableName) {
 		Connection conn = null;
 		PreparedStatement pstm = null;
-		//title = "Niklas234324";
-		String sql = "insert into "+ tableName + " (PLANE_ID, NAME, ECONOMIC_SEAT_AMOUNT, FIRSTCLASS_SEAT_AMOUNT, STATUS) values (?,?,?,?,?)";
-		
-		try { 
 
+		StringBuilder sql= new StringBuilder();
+		sql.append("insert into \"USER\"."+ tableName + "(");
+		
+		int nrOfColumns = addArray.size();
+		
+		int counter = 0;
+		for(String key : addArray.keySet()) {
+			sql.append(key);
+			counter++;
+			if(counter<nrOfColumns) {
+				sql.append(", ");
+			}
+		}
+		sql.append(") values (");
+		
+		counter = 0;
+		for(String key : addArray.keySet()) {
+
+			sql.append("?");
+			counter++;
+			if(counter<nrOfColumns) {
+				sql.append(", ");
+			}
+		}
+		sql.append(")");
+		
+		System.out.println(sql.toString());
+			
+		try {
 			try {
+				conn = DriverManager.getConnection("jdbc:derby://"+ this.adress + ":" + this.port + "/" + this.database +"");
+				pstm = conn.prepareStatement(sql.toString());
+		
+				counter = 1;
+				for(String key : addArray.keySet()) {
+					System.out.println("Key: " + key + ", value: " + addArray.get(key) + ", Type: " + addArray.get(key).getClass().getName());		
 				
-				conn = DriverManager.getConnection("jdbc:derby://localhost:50000/test");
-				pstm = conn.prepareStatement(sql);
-				pstm.setString(1, airPlaneID);
-				pstm.setString(2, name);
-				pstm.setInt(3, economicSeatAmount);
-				pstm.setInt(4, firstClassSeatAmount);
-				pstm.setString(5, status);
+					if(addArray.get(key).getClass().getName().equals("java.lang.String")) {
+						pstm.setString(counter, (String) addArray.get(key));
+					}			
+					else if(addArray.get(key).getClass().getName().equals("java.lang.Integer")) {
+						pstm.setInt(counter, (Integer) addArray.get(key));
+					}
+					
+					counter++;	
+				}
 				
 				int results = pstm.executeUpdate();
 				System.out.println("Records amended: " + results);
-				
-			} 
-			finally {
-				
-				if (pstm != null) pstm.close();
-				if (conn != null) conn.close();
 			}
-		}
+			finally {
+				if(conn != null) conn.close();
+				if(pstm != null) pstm.close();
+				System.out.println("Closing connection...");
+			}
 
-		catch (SQLException e) {
-
-			System.out.println("Something went wrong");
-			System.out.println(e);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
 	}
 	

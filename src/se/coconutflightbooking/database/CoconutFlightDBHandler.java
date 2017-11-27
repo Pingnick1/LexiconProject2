@@ -31,45 +31,72 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		// Collect and print Departure from DB
 		HashMap<String, Departure> departureList = dbConnection.getDepartures(); 
 		
+		/*
 		for(Departure departure : departureList.values()) {
 			System.out.println(departure);
 		}
-		
+		*/
 				
 		
 		// Collect and print AirPlane from DB
 		HashMap<String, AirPlane> airPlaneList = dbConnection.getAirPlanes(); 
 		
+		/*
 		for(AirPlane plane : airPlaneList.values()) {
 			System.out.println(plane);
 		}
+		*/
 		
 		// Collect and print FoodMenuItem from DB
 		HashMap<String, FoodMenuItem> foodMenuList = dbConnection.getFoodMenu(); 
 		
+		/*
 		for(FoodMenuItem foodMenuItem : foodMenuList.values()) {
 			System.out.println(foodMenuItem);
 		}
-		
+		*/
 		
 		// Collect and print Reservation from DB
 		HashMap<String, Reservation> reservationList = dbConnection.getReservations(); 
 		
+		/*
 		for(Reservation reservationItem : reservationList.values()) {
 			System.out.println(reservationItem);
 		}
+		*/
 		
 		
 		// Collect and print FoodOrderItem from DB
 		HashMap<String, FoodOrderItem> foodorderList = dbConnection.getFoodOrders(); 
 		
+		/*
 		for(FoodOrderItem foodorderItem : foodorderList.values()) {
 			System.out.println(foodorderItem);
 		}
+		*/
+		
+		AirPlane plane1 = new AirPlane("CCC00001", 5, 5, AirPlaneStatus.HANGAR);
+		
+		dbConnection.addAirPlane(plane1);
 		
 	}
 	
-	
+	public boolean addAirPlane(AirPlane newAirPlane) {
+		String sql = "Select * from \"USER\".\"AIRPLANES\"";
+		
+		HashMap<String, Object> addArray = new HashMap<String, Object>();
+		
+		addArray.put("PLANE_ID", newAirPlane.getAirPlaneID());
+		addArray.put("NAME", "No Name");
+		addArray.put("ECONOMIC_SEAT_AMOUNT", newAirPlane.getNrOfEconomcSeats());
+		addArray.put("FIRSTCLASS_SEAT_AMOUNT", newAirPlane.getNrOfFirstClass());
+		addArray.put("STATUS", newAirPlane.getAirPlaneStatus().toString());	//Type caste till String
+		
+		this.addData(addArray , "AIRPLANES");// addAirPlane(newAirPlane);		
+		
+		return false;
+
+	}
 	
 	public HashMap<String, AirPlane> getAirPlanes(){
 		HashMap<String, AirPlane> airPlaneList = new HashMap<String, AirPlane>(); 
@@ -116,8 +143,7 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
 			LocalDateTime dateTime = LocalDateTime.parse(departureDateTime.toString().substring(0, 19), formatter);
 			
-			Departure departure = new Departure(departureID, dateTime, destination, airPlaneID,  firstClassTicketPrice, economicTicketPrice);
-										
+			Departure departure = new Departure(departureID, dateTime, destination, airPlaneID,  firstClassTicketPrice, economicTicketPrice);									
 			departureList.put(departureID, departure);
 		}
 		return departureList;		
@@ -136,12 +162,10 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 						
 			String foodMenuID = (String) element.get("FOODMENU_ID");
 			String name = (String) element.get("NAME");
-			Integer price = (Integer) element.get("PRICE");
-			
+			Integer price = (Integer) element.get("PRICE");		
 			boolean isFirstClass = (boolean) element.get("IS_FIRSTCLASS");
 		
-			FoodMenuItem foodMenuItem = new FoodMenuItem(foodMenuID, name, price, isFirstClass);
-										
+			FoodMenuItem foodMenuItem = new FoodMenuItem(foodMenuID, name, price, isFirstClass);								
 			foodMenuList.put(foodMenuID, foodMenuItem);
 			
 		}
@@ -160,7 +184,6 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 			HashMap<String, Object> element = iterator.next();
 									
 			String reservationID = (String) element.get("RESERVATION_ID");
-			
 			String customerName = (String) element.get("CUSTOMER_NAME");
 			String departureId = (String) element.get("DEPARTURE_ID");
 			TicketType ticketType = TicketType.valueOf(element.get("TICKET_TYPE").toString());
@@ -170,8 +193,7 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
 			LocalDateTime dateTime = LocalDateTime.parse(reservationDateTime.toString().substring(0, 19), formatter);
 			
-			Reservation reservation = new Reservation(reservationID, dateTime,  customerName, departureId, ticketType, ticketCost);
-			
+			Reservation reservation = new Reservation(reservationID, dateTime,  customerName, departureId, ticketType, ticketCost);	
 			reservationList.put(reservationID, reservation);			
 		}
 		return reservationList;		
@@ -188,7 +210,6 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		while(iterator.hasNext()) {
 			HashMap<String, Object> element = iterator.next();
 									
-			
 			String foodorderID = (String) element.get("FOODORDER_ID");
 			String reservationID = (String) element.get("RESERVATION_ID");
 			String foodMenuId = (String) element.get("FOODMENU_ID");
@@ -196,13 +217,8 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 			Integer cost = (Integer) element.get("COST");								
 			
 			FoodOrderItem foodorder = new FoodOrderItem(foodorderID, reservationID, foodMenuId, isFirstClass, cost);
-			
-			foodOrderList.put(foodorderID, foodorder);
-						
+			foodOrderList.put(foodorderID, foodorder);			
 		}
 		return foodOrderList;
-	
 	}
-	
-
 }
