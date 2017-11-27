@@ -1,15 +1,19 @@
 package se.coconutflightbooking.database;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Iterator;
+import java.util.Map;
 
 import se.coconutflightbooking.AirPlane;
 import se.coconutflightbooking.AirPlaneStatus;
@@ -61,23 +65,14 @@ public class OurDatabasConnection {
 		OurDatabasConnection dbConnection = new OurDatabasConnection();
 		
 		
-		/*
-		
-		//String sql = "Select * from MYTABLE";
-		for(int i=0;i<10;i++) {
-			
-			dbConnection.addData("CCC00000"+ (i), "Niklas" + i, 5, 5, "HANGAR","AIRPLANES");
-		}
-		*/
-		//String sql = "Select * from \"USER\".\"AIRPLANES\"";
-		//HashMap<String, HashMap<String, String>> result = dbConnection.retrieveResultSet(sql);
-		
 		
 		HashMap<String, Departure> departureList = dbConnection.getDepartures(); 
 		
 		for(Departure departure : departureList.values()) {
 			System.out.println(departure);
 		}
+		
+				
 		
 		
 		HashMap<String, AirPlane> airPlaneList = dbConnection.getAirPlanes(); 
@@ -86,12 +81,14 @@ public class OurDatabasConnection {
 			System.out.println(plane);
 		}
 		
-		
+
 		HashMap<String, FoodMenuItem> foodMenuList = dbConnection.getFoodMenu(); 
 		
 		for(FoodMenuItem foodMenuItem : foodMenuList.values()) {
 			System.out.println(foodMenuItem);
 		}
+		
+		
 		
 		HashMap<String, Reservation> reservationList = dbConnection.getReservations(); 
 		
@@ -99,13 +96,41 @@ public class OurDatabasConnection {
 			System.out.println(reservationItem);
 		}
 		
+		
+		
 		HashMap<String, FoodOrderItem> foodorderList = dbConnection.getFoodOrders(); 
 		
 		for(FoodOrderItem foodorderItem : foodorderList.values()) {
 			System.out.println(foodorderItem);
 		}
+		
 	}
 	
+	
+	public HashMap<String, AirPlane> getAirPlanes(){
+		HashMap<String, AirPlane> airPlaneList = new HashMap<String, AirPlane>(); 
+		String sql = "Select * from \"USER\".\"AIRPLANES\"";
+		
+		ArrayList<HashMap<String, Object>> rs = this.retrieveResult (sql);
+		
+		Iterator<HashMap<String, Object>> iterator = rs.iterator();
+		
+		while(iterator.hasNext()) {
+			HashMap<String, Object> element = iterator.next();
+			
+			String airPlaneID = (String) element.get("PLANE_ID");
+			String name = (String) element.get("name");
+			Integer economic_seat_amount = (Integer) element.get("ECONOMIC_SEAT_AMOUNT");
+			Integer firstclass_seat_amount = (Integer) element.get("FIRSTCLASS_SEAT_AMOUNT");
+			AirPlaneStatus status = AirPlaneStatus.valueOf((String) element.get("STATUS"));
+						
+			AirPlane airplane = new AirPlane(airPlaneID, name, economic_seat_amount, firstclass_seat_amount, status);													
+			airPlaneList.put(airPlaneID, airplane);
+		}
+		return airPlaneList;		
+	}
+	
+	/*
 	public HashMap<String, AirPlane> getAirPlanes(){
 		HashMap<String, AirPlane> airPlaneList = new HashMap<String, AirPlane>(); 
 		String sql = "Select * from \"USER\".\"AIRPLANES\"";
@@ -143,8 +168,41 @@ public class OurDatabasConnection {
 			System.out.println(e);
 		}
 		return null;
+	}*/
+	
+	
+	
+	public HashMap<String, Departure> getDepartures(){
+		HashMap<String, Departure> departureList = new HashMap<String, Departure>(); 
+		String sql = "Select * from \"USER\".\"DEPARTURES\"";
+		
+		ArrayList<HashMap<String, Object>> rs = this.retrieveResult (sql);
+		
+		Iterator<HashMap<String, Object>> iterator = rs.iterator();
+		
+		while(iterator.hasNext()) {
+			HashMap<String, Object> element = iterator.next();
+			
+			String departureID = (String) element.get("DEPARTURE_ID");
+			String airPlaneID = (String) element.get("AIRPLANE_ID");
+			String destination = (String) element.get("DESTINATION");
+			Integer economicTicketPrice = (Integer) element.get("ECONOMIC_TICKET_PRICE");
+			Integer firstClassTicketPrice = (Integer) element.get("FIRSTCLASS_TICKET_PRICE");
+			
+			//String departureDateTime = ((String) element.get("DEPARTURE_DATETIME")).substring(0, 19);
+			Timestamp departureDateTime = (Timestamp) (element.get("DEPARTURE_DATETIME"));
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+			LocalDateTime dateTime = LocalDateTime.parse(departureDateTime.toString().substring(0, 19), formatter);
+			
+			Departure departure = new Departure(departureID, dateTime, destination, airPlaneID,  firstClassTicketPrice, economicTicketPrice);
+										
+			departureList.put(departureID, departure);
+		}
+		return departureList;		
 	}
 	
+	
+	/*
 	public HashMap<String, Departure> getDepartures(){
 		HashMap<String, Departure> departureList = new HashMap<String, Departure>(); 
 		String sql = "SELECT * FROM \"USER\".\"DEPARTURES\""; // SELECT * FROM "USER"."DEPARTURES";
@@ -183,8 +241,35 @@ public class OurDatabasConnection {
 		}
 		return null;
 	}
+	*/
 	
 	
+	public HashMap<String, FoodMenuItem> getFoodMenu(){
+		HashMap<String, FoodMenuItem> foodMenuList = new HashMap<String, FoodMenuItem>(); 
+		String sql = "Select * from \"USER\".\"FOODMENU\"";
+		
+		ArrayList<HashMap<String, Object>> rs = this.retrieveResult (sql);
+		
+		Iterator<HashMap<String, Object>> iterator = rs.iterator();
+		
+		while(iterator.hasNext()) {
+			HashMap<String, Object> element = iterator.next();
+						
+			String foodMenuID = (String) element.get("FOODMENU_ID");
+			String name = (String) element.get("NAME");
+			Integer price = (Integer) element.get("PRICE");
+			
+			boolean isFirstClass = (boolean) element.get("IS_FIRSTCLASS");
+		
+			FoodMenuItem foodMenuItem = new FoodMenuItem(foodMenuID, name, price, isFirstClass);
+										
+			foodMenuList.put(foodMenuID, foodMenuItem);
+			
+		}
+		return foodMenuList;		
+	}
+	
+	/*
 	public HashMap<String, FoodMenuItem> getFoodMenu(){
 		HashMap<String, FoodMenuItem> foodMenuList = new HashMap<String, FoodMenuItem>(); 
 		String sql = "Select * from \"USER\".\"FOODMENU\"";
@@ -218,8 +303,40 @@ public class OurDatabasConnection {
 		}
 		return null;
 	}
+	*/
 	
 	
+	
+	public HashMap<String, Reservation> getReservations(){
+		HashMap<String, Reservation> reservationList = new HashMap<String, Reservation>(); 
+		String sql = "Select * from \"USER\".\"RESERVATIONS\"";
+		
+		ArrayList<HashMap<String, Object>> rs = this.retrieveResult (sql);
+		
+		Iterator<HashMap<String, Object>> iterator = rs.iterator();
+		
+		while(iterator.hasNext()) {
+			HashMap<String, Object> element = iterator.next();
+									
+			String reservationID = (String) element.get("RESERVATION_ID");
+			
+			String customerName = (String) element.get("CUSTOMER_NAME");
+			String departureId = (String) element.get("DEPARTURE_ID");
+			TicketType ticketType = TicketType.valueOf(element.get("TICKET_TYPE").toString());
+			Integer ticketCost = (Integer) element.get("COST");
+				
+			Timestamp reservationDateTime = (Timestamp) element.get("RESERVATION_DATETIME");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+			LocalDateTime dateTime = LocalDateTime.parse(reservationDateTime.toString().substring(0, 19), formatter);
+			
+			Reservation reservation = new Reservation(reservationID, dateTime,  customerName, departureId, ticketType, ticketCost);
+			
+			reservationList.put(reservationID, reservation);			
+		}
+		return reservationList;		
+	}
+	
+	/*
 	public HashMap<String, Reservation> getReservations(){
 		HashMap<String, Reservation> reservationList = new HashMap<String, Reservation>(); 
 		String sql = "Select * from \"USER\".\"RESERVATIONS\"";
@@ -258,8 +375,37 @@ public class OurDatabasConnection {
 		}
 		return null;
 	}
+	*/
 	
 	
+	
+	public HashMap<String, FoodOrderItem> getFoodOrders(){
+		HashMap<String, FoodOrderItem> foodOrderList = new HashMap<String, FoodOrderItem>(); 
+		String sql = "Select * from \"USER\".\"FOODORDER\"";
+		
+		ArrayList<HashMap<String, Object>> rs = this.retrieveResult (sql);
+		
+		Iterator<HashMap<String, Object>> iterator = rs.iterator();
+		
+		while(iterator.hasNext()) {
+			HashMap<String, Object> element = iterator.next();
+									
+			
+			String foodorderID = (String) element.get("FOODORDER_ID");
+			String reservationID = (String) element.get("RESERVATION_ID");
+			String foodMenuId = (String) element.get("FOODMENU_ID");
+			boolean isFirstClass = (boolean) element.get("IS_FIRSTCLASS");
+			Integer cost = (Integer) element.get("COST");								
+			
+			FoodOrderItem foodorder = new FoodOrderItem(foodorderID, reservationID, foodMenuId, isFirstClass, cost);
+			
+			foodOrderList.put(foodorderID, foodorder);
+						
+		}
+		return foodOrderList;		
+	}
+	
+	/*
 	public HashMap<String, FoodOrderItem> getFoodOrders(){
 		HashMap<String, FoodOrderItem> foodOrderList = new HashMap<String, FoodOrderItem>(); 
 		String sql = "Select * from \"USER\".\"FOODORDER\"";
@@ -294,6 +440,8 @@ public class OurDatabasConnection {
 		}
 		return null;
 	}
+	*/
+	
 	
 	private void createTable() {
 		
@@ -403,42 +551,86 @@ public class OurDatabasConnection {
 	}
 	*/
 	
-	public HashMap<String, HashMap<String, String>> retrieveResultSet (String sql) {
-		//HashMap<String,String> retrieveMap = new HashMap<String, String>();
-		HashMap<String, HashMap<String, String>> retrieveMap = new HashMap<String, HashMap<String, String>>();
+	public ArrayList<HashMap<String, Object>> retrieveResult (String sql) {
+		Connection conn = null; 
+		Statement stm = null; 
+		ResultSet rs = null; 
 		
-		//ArrayList <String, ArrayList<String>> minArray = new ArrayList<String, ArrayList<String>>();
-		try {
-			//Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
-			
-			try (Connection conn = DriverManager.getConnection("jdbc:derby://localhost:50000/Coconut")) {
-				try(Statement stm = conn.createStatement()){
-					try(ResultSet rs = stm.executeQuery(sql)){
-						while (rs.next()) {
-							HashMap<String, String> row = new HashMap<String, String>();
-							row.put("PLANE_ID", rs.getString("PLANE_ID"));
-							row.put("name", rs.getString("name"));
-							row.put("ECONOMIC_SEAT_AMOUNT", rs.getString("ECONOMIC_SEAT_AMOUNT"));
-							row.put("FIRSTCLASS_SEAT_AMOUNT", rs.getString("FIRSTCLASS_SEAT_AMOUNT"));
-							row.put("STATUS", rs.getString("STATUS"));
-							
-							System.out.println(rs.getString("PLANE_ID") + " " + rs.getString("name") + " " + rs.getString("ECONOMIC_SEAT_AMOUNT") + " " + rs.getString("FIRSTCLASS_SEAT_AMOUNT") + " " + rs.getString("STATUS"));
-							retrieveMap.put(rs.getString("PLANE_ID"), row);
-						}	
-					}
-					finally {
-						return retrieveMap;
-					}
-				}
-			}	
-		}
-		catch (SQLException e) {
+		//ArrayList<ArrayList<Object>> returnArray = new ArrayList<ArrayList<Object>>();
+		
+		ArrayList<HashMap<String, Object>> returnArray = new ArrayList<HashMap<String, Object>>();
+		
+		int startColumn = 2;
+		
+		System.out.println(sql);
+		
+		try {	
+			try {
+				conn = DriverManager.getConnection("jdbc:derby://localhost:50000/Coconut");
+				stm = conn.createStatement();
+				rs = stm.executeQuery(sql);
 
-			System.out.println("Something went wrong");
+				System.out.println("getTableName: " + rs.getMetaData().getTableName(1));		
+				
+				//System.out.println("getColumnType: " + rs.getMetaData().getColumnType(1));
+		        System.out.println("getColumnTypeName: " + rs.getMetaData().getColumnTypeName(1).toString());
+		        //System.out.println("getColumnName: " + rs.getMetaData().getColumnName(1));
+	            System.out.println("getColumnCount: "+ rs.getMetaData().getColumnCount());
+	            //System.out.println("getColumnClassName: " + rs.getMetaData().getColumnClassName(1));
+		           
+		        
+	            System.out.println("getColumnDisplaySize: " + rs.getMetaData().getColumnDisplaySize(1));
+	            int nrOfColumns = rs.getMetaData().getColumnCount();
+		       	for(int i = startColumn; i<=nrOfColumns ;i++) {
+	               System.out.print("\t " + rs.getMetaData().getColumnName(i) + "[");
+          
+	               System.out.print("" + rs.getMetaData().getColumnTypeName(i).toString() + "] \t| ");	                
+	                
+	            }
+		       	System.out.print("\n");
+		       	System.out.println("-----------------------------------------------------------------------------------------");
+				while (rs.next()) {
+					HashMap<String, Object> rowArray = new HashMap<String, Object>();
+					
+					System.out.print("Rad " + rs.getRow() + ": ");
+	                for(int i = startColumn; i<=nrOfColumns ;i++) {
+	                	
+	                	if(rs.getObject(i).getClass().getName().equals("java.lang.String")) {
+	                		rowArray.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+	                	}
+	                	else if(rs.getMetaData().getColumnTypeName(i).toString().equals("SMALLINT")) {
+	                		System.out.print(rs.getMetaData().getColumnTypeName(i).toString());
+	                		rowArray.put(rs.getMetaData().getColumnName(i), rs.getBoolean(i));
+	                	}
+	                	else if(rs.getObject(i).getClass().getName().equals("java.lang.Integer")) {	                		
+	                		rowArray.put(rs.getMetaData().getColumnName(i), rs.getInt(i));
+	                	}
+	                	else if(rs.getObject(i).getClass().getName().equals("java.sql.Timestamp")) {
+	                		rowArray.put(rs.getMetaData().getColumnName(i), rs.getTimestamp(i));
+	                	}
+	                	else {
+	                		System.out.print(",\t Uknown!, " + rs.getMetaData().getColumnTypeName(i).toString());
+	                		System.out.print(rs.getObject(i).getClass().getName());
+	                	}	
+	                }
+	                System.out.print(rowArray);
+	                System.out.print("\n");
+	                returnArray.add(rowArray);
+				}	
+				return returnArray;
+			}
+			finally {
+				if(conn != null) conn.close();
+				if(stm != null) stm.close();
+				if(rs != null) rs.close();
+				System.out.println("Closing connection...");
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("SQLException");
 			System.out.println(e);
 		}
 		return null;
-
 	}
 	
 }
