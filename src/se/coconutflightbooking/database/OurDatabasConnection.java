@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class OurDatabasConnection {
 	private Connection conn = null;
@@ -47,14 +46,14 @@ public class OurDatabasConnection {
 	}
 	
 	
-	public void removeData(String sql, String title, int id) {
+	public void removeData(String TableName, String Column, Object ObjectToRemove) {
 		
 			try {
 				//Class.forName("org.apache.derby.jdbc.ClientDriver");
 				//this.conn = DriverManager.getConnection("jdbc:derby://localhost/library");
-				this.pstm = this.conn.prepareStatement(sql);
-				this.pstm.setString(1,title);
-				this.pstm.setInt(2, id);
+				//this.pstm = this.conn.prepareStatement(sql);
+				//this.pstm.setString(1,title);
+				//this.pstm.setInt(2, id);
 				
 				int results = this.pstm.executeUpdate();
 				System.out.println("Records amended: " + results);
@@ -85,12 +84,19 @@ public class OurDatabasConnection {
 	
 	}
 	
-	public void addData(HashMap<String, Object> addArray, String tableName) {
+	/**
+	 * 
+	 * @param addArray
+	 * @param tableName
+	 * @throws NotSupportedDataTypeException
+	 */
+	public boolean addData(HashMap<String, Object> addArray, String tableName) throws NotSupportedDataTypeException {
 		Connection conn = null;
 		PreparedStatement pstm = null;
 
+		//Create sql string
 		StringBuilder sql= new StringBuilder();
-		sql.append("insert into \"USER\"."+ tableName + "(");
+		sql.append("insert into " + tableName + "(");
 		
 		int nrOfColumns = addArray.size();
 		
@@ -114,6 +120,7 @@ public class OurDatabasConnection {
 			}
 		}
 		sql.append(")");
+		// End of create SQL string 
 		
 		System.out.println(sql.toString());
 			
@@ -132,12 +139,22 @@ public class OurDatabasConnection {
 					else if(addArray.get(key).getClass().getName().equals("java.lang.Integer")) {
 						pstm.setInt(counter, (Integer) addArray.get(key));
 					}
+					else {
+						throw new NotSupportedDataTypeException();
+					}
+					// TODO: Support for Double, SmallInt/Boolean, Enum
+					
 					
 					counter++;	
 				}
 				
 				int results = pstm.executeUpdate();
 				System.out.println("Records amended: " + results);
+				if(results>0)
+					return true;
+				else
+					return false;
+				
 			}
 			finally {
 				if(conn != null) conn.close();
@@ -148,6 +165,7 @@ public class OurDatabasConnection {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		return false;
 	}
 	
 	/*
@@ -179,7 +197,7 @@ public class OurDatabasConnection {
 	}
 	*/
 	
-	public ArrayList<HashMap<String, Object>> retrieveResult (String sql) {
+	public ArrayList<HashMap<String, Object>> retrieveResult (String sql) throws NotSupportedDataTypeException {
 		Connection conn = null; 
 		Statement stm = null; 
 		ResultSet rs = null; 
@@ -237,6 +255,7 @@ public class OurDatabasConnection {
 	                	else {
 	                		System.out.print(",\t Uknown!, " + rs.getMetaData().getColumnTypeName(i).toString());
 	                		System.out.print(rs.getObject(i).getClass().getName());
+	                		throw new NotSupportedDataTypeException();
 	                	}	
 	                }
 	                System.out.print(rowArray);

@@ -82,7 +82,8 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 	}
 	
 	public boolean addAirPlane(AirPlane newAirPlane) {
-		String sql = "Select * from \"USER\".\"AIRPLANES\"";
+		//String sql = "Select * from \"USER\".\"AIRPLANES\"";
+		String tableName = "\"USER\".\"AIRPLANES\"";
 		
 		HashMap<String, Object> addArray = new HashMap<String, Object>();
 		
@@ -90,9 +91,18 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		addArray.put("NAME", "No Name");
 		addArray.put("ECONOMIC_SEAT_AMOUNT", newAirPlane.getNrOfEconomcSeats());
 		addArray.put("FIRSTCLASS_SEAT_AMOUNT", newAirPlane.getNrOfFirstClass());
-		addArray.put("STATUS", newAirPlane.getAirPlaneStatus().toString());	//Type caste till String
+		addArray.put("STATUS", newAirPlane.getAirPlaneStatus().toString());	//Type cast till String
 		
-		this.addData(addArray , "AIRPLANES");// addAirPlane(newAirPlane);		
+		try {
+			
+			boolean result = this.addData(addArray, tableName);
+			System.out.println("OurDatabasConnection::addData() returned: " + result);
+			return result;
+			
+		} catch (NotSupportedDataTypeException e) {
+			System.out.println("NotSupportedDataTypeException in addAirPlane");
+			//e.printStackTrace();
+		}		
 		
 		return false;
 
@@ -102,123 +112,164 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		HashMap<String, AirPlane> airPlaneList = new HashMap<String, AirPlane>(); 
 		String sql = "Select * from \"USER\".\"AIRPLANES\"";
 		
-		ArrayList<HashMap<String, Object>> rs = this.retrieveResult (sql);
-		
-		Iterator<HashMap<String, Object>> iterator = rs.iterator();
-		
-		while(iterator.hasNext()) {
-			HashMap<String, Object> element = iterator.next();
+		ArrayList<HashMap<String, Object>> rs;
+		try {
+			rs = this.retrieveResult (sql);
 			
-			String airPlaneID = (String) element.get("PLANE_ID");
-			String name = (String) element.get("name");
-			Integer economic_seat_amount = (Integer) element.get("ECONOMIC_SEAT_AMOUNT");
-			Integer firstclass_seat_amount = (Integer) element.get("FIRSTCLASS_SEAT_AMOUNT");
-			AirPlaneStatus status = AirPlaneStatus.valueOf((String) element.get("STATUS"));
-						
-			AirPlane airplane = new AirPlane(airPlaneID, name, economic_seat_amount, firstclass_seat_amount, status);													
-			airPlaneList.put(airPlaneID, airplane);
+			Iterator<HashMap<String, Object>> iterator = rs.iterator();
+			
+			while(iterator.hasNext()) {
+				HashMap<String, Object> element = iterator.next();
+				
+				String airPlaneID = (String) element.get("PLANE_ID");
+				String name = (String) element.get("name");
+				Integer economic_seat_amount = (Integer) element.get("ECONOMIC_SEAT_AMOUNT");
+				Integer firstclass_seat_amount = (Integer) element.get("FIRSTCLASS_SEAT_AMOUNT");
+				AirPlaneStatus status = AirPlaneStatus.valueOf((String) element.get("STATUS"));
+							
+				AirPlane airplane = new AirPlane(airPlaneID, name, economic_seat_amount, firstclass_seat_amount, status);													
+				airPlaneList.put(airPlaneID, airplane);
+			}
+			return airPlaneList;
+			
+		} catch (NotSupportedDataTypeException e) {
+			System.out.println("NotSupportedDataTypeException in getAirPlanes");
+			e.printStackTrace();
 		}
-		return airPlaneList;		
+		
+		return null;		
 	}
 	
 	public HashMap<String, Departure> getDepartures(){
 		HashMap<String, Departure> departureList = new HashMap<String, Departure>(); 
 		String sql = "Select * from \"USER\".\"DEPARTURES\"";
 		
-		ArrayList<HashMap<String, Object>> rs = this.retrieveResult (sql);
-		
-		Iterator<HashMap<String, Object>> iterator = rs.iterator();
-		
-		while(iterator.hasNext()) {
-			HashMap<String, Object> element = iterator.next();
+		ArrayList<HashMap<String, Object>> rs;
+		try {
+			rs = this.retrieveResult (sql);
 			
-			String departureID = (String) element.get("DEPARTURE_ID");
-			String airPlaneID = (String) element.get("AIRPLANE_ID");
-			String destination = (String) element.get("DESTINATION");
-			Integer economicTicketPrice = (Integer) element.get("ECONOMIC_TICKET_PRICE");
-			Integer firstClassTicketPrice = (Integer) element.get("FIRSTCLASS_TICKET_PRICE");
+			Iterator<HashMap<String, Object>> iterator = rs.iterator();
 			
-			//String departureDateTime = ((String) element.get("DEPARTURE_DATETIME")).substring(0, 19);
-			Timestamp departureDateTime = (Timestamp) (element.get("DEPARTURE_DATETIME"));
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
-			LocalDateTime dateTime = LocalDateTime.parse(departureDateTime.toString().substring(0, 19), formatter);
-			
-			Departure departure = new Departure(departureID, dateTime, destination, airPlaneID,  firstClassTicketPrice, economicTicketPrice);									
-			departureList.put(departureID, departure);
+			while(iterator.hasNext()) {
+				HashMap<String, Object> element = iterator.next();
+				
+				String departureID = (String) element.get("DEPARTURE_ID");
+				String airPlaneID = (String) element.get("AIRPLANE_ID");
+				String destination = (String) element.get("DESTINATION");
+				Integer economicTicketPrice = (Integer) element.get("ECONOMIC_TICKET_PRICE");
+				Integer firstClassTicketPrice = (Integer) element.get("FIRSTCLASS_TICKET_PRICE");
+				
+				//String departureDateTime = ((String) element.get("DEPARTURE_DATETIME")).substring(0, 19);
+				Timestamp departureDateTime = (Timestamp) (element.get("DEPARTURE_DATETIME"));
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+				LocalDateTime dateTime = LocalDateTime.parse(departureDateTime.toString().substring(0, 19), formatter);
+				
+				Departure departure = new Departure(departureID, dateTime, destination, airPlaneID,  firstClassTicketPrice, economicTicketPrice);									
+				departureList.put(departureID, departure);
+			}
+			return departureList;
+		} catch (NotSupportedDataTypeException e) {
+			System.out.println("NotSupportedDataTypeException in getDepartures");
+			//e.printStackTrace();
 		}
-		return departureList;		
+		
+		return null;		
 	}
 	
 	public HashMap<String, FoodMenuItem> getFoodMenu(){
 		HashMap<String, FoodMenuItem> foodMenuList = new HashMap<String, FoodMenuItem>(); 
 		String sql = "Select * from \"USER\".\"FOODMENU\"";
 		
-		ArrayList<HashMap<String, Object>> rs = this.retrieveResult (sql);
-		
-		Iterator<HashMap<String, Object>> iterator = rs.iterator();
-		
-		while(iterator.hasNext()) {
-			HashMap<String, Object> element = iterator.next();
-						
-			String foodMenuID = (String) element.get("FOODMENU_ID");
-			String name = (String) element.get("NAME");
-			Integer price = (Integer) element.get("PRICE");		
-			boolean isFirstClass = (boolean) element.get("IS_FIRSTCLASS");
-		
-			FoodMenuItem foodMenuItem = new FoodMenuItem(foodMenuID, name, price, isFirstClass);								
-			foodMenuList.put(foodMenuID, foodMenuItem);
+		ArrayList<HashMap<String, Object>> rs;
+		try {
+			rs = this.retrieveResult (sql);
 			
+			Iterator<HashMap<String, Object>> iterator = rs.iterator();
+			
+			while(iterator.hasNext()) {
+				HashMap<String, Object> element = iterator.next();
+							
+				String foodMenuID = (String) element.get("FOODMENU_ID");
+				String name = (String) element.get("NAME");
+				Integer price = (Integer) element.get("PRICE");		
+				boolean isFirstClass = (boolean) element.get("IS_FIRSTCLASS");
+			
+				FoodMenuItem foodMenuItem = new FoodMenuItem(foodMenuID, name, price, isFirstClass);								
+				foodMenuList.put(foodMenuID, foodMenuItem);
+				
+			}
+			return foodMenuList;
+		} catch (NotSupportedDataTypeException e) {
+			System.out.println("NotSupportedDataTypeException in getFoodMenu");
+			//e.printStackTrace();
 		}
-		return foodMenuList;		
+		
+		return null;		
 	}
 	
 	public HashMap<String, Reservation> getReservations(){
 		HashMap<String, Reservation> reservationList = new HashMap<String, Reservation>(); 
 		String sql = "Select * from \"USER\".\"RESERVATIONS\"";
 		
-		ArrayList<HashMap<String, Object>> rs = this.retrieveResult (sql);
-		
-		Iterator<HashMap<String, Object>> iterator = rs.iterator();
-		
-		while(iterator.hasNext()) {
-			HashMap<String, Object> element = iterator.next();
-									
-			String reservationID = (String) element.get("RESERVATION_ID");
-			String customerName = (String) element.get("CUSTOMER_NAME");
-			String departureId = (String) element.get("DEPARTURE_ID");
-			TicketType ticketType = TicketType.valueOf(element.get("TICKET_TYPE").toString());
-			Integer ticketCost = (Integer) element.get("COST");
-				
-			Timestamp reservationDateTime = (Timestamp) element.get("RESERVATION_DATETIME");
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
-			LocalDateTime dateTime = LocalDateTime.parse(reservationDateTime.toString().substring(0, 19), formatter);
+		ArrayList<HashMap<String, Object>> rs;
+		try {
+			rs = this.retrieveResult (sql);
 			
-			Reservation reservation = new Reservation(reservationID, dateTime,  customerName, departureId, ticketType, ticketCost);	
-			reservationList.put(reservationID, reservation);			
+			Iterator<HashMap<String, Object>> iterator = rs.iterator();
+			
+			while(iterator.hasNext()) {
+				HashMap<String, Object> element = iterator.next();
+										
+				String reservationID = (String) element.get("RESERVATION_ID");
+				String customerName = (String) element.get("CUSTOMER_NAME");
+				String departureId = (String) element.get("DEPARTURE_ID");
+				TicketType ticketType = TicketType.valueOf(element.get("TICKET_TYPE").toString());
+				Integer ticketCost = (Integer) element.get("COST");
+					
+				Timestamp reservationDateTime = (Timestamp) element.get("RESERVATION_DATETIME");
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+				LocalDateTime dateTime = LocalDateTime.parse(reservationDateTime.toString().substring(0, 19), formatter);
+				
+				Reservation reservation = new Reservation(reservationID, dateTime,  customerName, departureId, ticketType, ticketCost);	
+				reservationList.put(reservationID, reservation);			
+			}
+			return reservationList;
+		} catch (NotSupportedDataTypeException e) {
+			System.out.println("NotSupportedDataTypeException in getReservations");
+			//e.printStackTrace();
 		}
-		return reservationList;		
+		
+		return null;		
 	}
 	
 	public HashMap<String, FoodOrderItem> getFoodOrders(){
 		HashMap<String, FoodOrderItem> foodOrderList = new HashMap<String, FoodOrderItem>(); 
 		String sql = "Select * from \"USER\".\"FOODORDER\"";
 		
-		ArrayList<HashMap<String, Object>> rs = this.retrieveResult (sql);
-		
-		Iterator<HashMap<String, Object>> iterator = rs.iterator();
-		
-		while(iterator.hasNext()) {
-			HashMap<String, Object> element = iterator.next();
-									
-			String foodorderID = (String) element.get("FOODORDER_ID");
-			String reservationID = (String) element.get("RESERVATION_ID");
-			String foodMenuId = (String) element.get("FOODMENU_ID");
-			boolean isFirstClass = (boolean) element.get("IS_FIRSTCLASS");
-			Integer cost = (Integer) element.get("COST");								
+		ArrayList<HashMap<String, Object>> rs;
+		try {
+			rs = this.retrieveResult (sql);
 			
-			FoodOrderItem foodorder = new FoodOrderItem(foodorderID, reservationID, foodMenuId, isFirstClass, cost);
-			foodOrderList.put(foodorderID, foodorder);			
+			Iterator<HashMap<String, Object>> iterator = rs.iterator();
+			
+			while(iterator.hasNext()) {
+				HashMap<String, Object> element = iterator.next();
+										
+				String foodorderID = (String) element.get("FOODORDER_ID");
+				String reservationID = (String) element.get("RESERVATION_ID");
+				String foodMenuId = (String) element.get("FOODMENU_ID");
+				boolean isFirstClass = (boolean) element.get("IS_FIRSTCLASS");
+				Integer cost = (Integer) element.get("COST");								
+				
+				FoodOrderItem foodorder = new FoodOrderItem(foodorderID, reservationID, foodMenuId, isFirstClass, cost);
+				foodOrderList.put(foodorderID, foodorder);			
+			}
+			return foodOrderList;
+		} catch (NotSupportedDataTypeException e) {
+			System.out.println("NotSupportedDataTypeException in getFoodOrders");
+			//e.printStackTrace();
 		}
-		return foodOrderList;
+		
+		return null;
 	}
 }
