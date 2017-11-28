@@ -26,10 +26,10 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 	public static void main(String[] args) {
 		System.out.println("Hello World");
 		
-		CoconutFlightDBHandler dbConnection = new CoconutFlightDBHandler();
+		//CoconutFlightDBHandler dbConnection = new CoconutFlightDBHandler();
 
 		// Collect and print Departure from DB
-		HashMap<String, Departure> departureList = dbConnection.getDepartures(); 
+		//HashMap<String, Departure> departureList = dbConnection.getDepartures(); 
 		
 		/*
 		for(Departure departure : departureList.values()) {
@@ -39,7 +39,7 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 				
 		
 		// Collect and print AirPlane from DB
-		HashMap<String, AirPlane> airPlaneList = dbConnection.getAirPlanes(); 
+		//HashMap<String, AirPlane> airPlaneList = dbConnection.getAirPlanes(); 
 		
 		/*
 		for(AirPlane plane : airPlaneList.values()) {
@@ -48,7 +48,7 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		*/
 		
 		// Collect and print FoodMenuItem from DB
-		HashMap<String, FoodMenuItem> foodMenuList = dbConnection.getFoodMenu(); 
+		//HashMap<String, FoodMenuItem> foodMenuList = dbConnection.getFoodMenu(); 
 		
 		/*
 		for(FoodMenuItem foodMenuItem : foodMenuList.values()) {
@@ -57,7 +57,7 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		*/
 		
 		// Collect and print Reservation from DB
-		HashMap<String, Reservation> reservationList = dbConnection.getReservations(); 
+		//HashMap<String, Reservation> reservationList = dbConnection.getReservations(); 
 		
 		/*
 		for(Reservation reservationItem : reservationList.values()) {
@@ -67,7 +67,7 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		
 		
 		// Collect and print FoodOrderItem from DB
-		HashMap<String, FoodOrderItem> foodorderList = dbConnection.getFoodOrders(); 
+		//HashMap<String, FoodOrderItem> foodorderList = dbConnection.getFoodOrders(); 
 		
 		/*
 		for(FoodOrderItem foodorderItem : foodorderList.values()) {
@@ -75,9 +75,9 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		}
 		*/
 		
-		AirPlane plane1 = new AirPlane("CCC00001", 5, 5, AirPlaneStatus.HANGAR);
+		//AirPlane plane1 = new AirPlane("CCC00001", 5, 5, AirPlaneStatus.HANGAR);
 		
-		dbConnection.addAirPlane(plane1);
+		//dbConnection.addAirPlane(plane1);
 		
 	}
 	
@@ -96,7 +96,7 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 		try {
 			
 			boolean result = this.addData(addArray, tableName);
-			System.out.println("OurDatabasConnection::addData() returned: " + result);
+			//System.out.println("OurDatabasConnection::addData() returned: " + result);
 			return result;
 			
 		} catch (NotSupportedDataTypeException e) {
@@ -110,7 +110,8 @@ public class CoconutFlightDBHandler extends OurDatabasConnection {
 	
 	public HashMap<String, AirPlane> getAirPlanes(){
 		HashMap<String, AirPlane> airPlaneList = new HashMap<String, AirPlane>(); 
-		String sql = "Select * from \"USER\".\"AIRPLANES\"";
+		String tableName = "\"USER\".\"AIRPLANES\"";
+		String sql = "Select * from " + tableName;
 		
 		ArrayList<HashMap<String, Object>> rs;
 		try {

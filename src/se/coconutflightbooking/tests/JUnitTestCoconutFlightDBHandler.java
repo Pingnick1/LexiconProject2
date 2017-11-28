@@ -154,9 +154,7 @@ class JUnitTestCoconutFlightDBHandler {
 		*/
 		int sizeAfter = airPlaneList.size();
 		System.out.println("Number of airplanes after adding: " + sizeAfter);
-		//assertTrue((sizeAfter - sizeBefore) == 1);
-		
-		
+				
 	}
 
 }

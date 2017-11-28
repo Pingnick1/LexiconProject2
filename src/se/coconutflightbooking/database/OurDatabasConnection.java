@@ -139,10 +139,13 @@ public class OurDatabasConnection {
 					else if(addArray.get(key).getClass().getName().equals("java.lang.Integer")) {
 						pstm.setInt(counter, (Integer) addArray.get(key));
 					}
+					else if(addArray.get(key).getClass().getName().equals("java.lang.Double")) {
+						pstm.setDouble(counter, (Double) addArray.get(key));
+					}
 					else {
 						throw new NotSupportedDataTypeException();
 					}
-					// TODO: Support for Double, SmallInt/Boolean, Enum
+					// TODO: Support for java.lang.Double(Double), SmallInt/Boolean, Enum
 					
 					
 					counter++;	
@@ -159,7 +162,7 @@ public class OurDatabasConnection {
 			finally {
 				if(conn != null) conn.close();
 				if(pstm != null) pstm.close();
-				System.out.println("Closing connection...");
+				System.out.println("Closing connection..."); 
 			}
 
 		} catch (SQLException e1) {
@@ -214,21 +217,27 @@ public class OurDatabasConnection {
 				stm = conn.createStatement();
 				rs = stm.executeQuery(sql);
 
+				//conn.isValid(timeout);
+				//conn.isClosed();
+				
+				
+				
 				System.out.println("getTableName: " + rs.getMetaData().getTableName(1));		
 				
 				//System.out.println("getColumnType: " + rs.getMetaData().getColumnType(1));
-		        System.out.println("getColumnTypeName: " + rs.getMetaData().getColumnTypeName(1).toString());
+		        //System.out.println("getColumnTypeName: " + rs.getMetaData().getColumnTypeName(1).toString());
 		        //System.out.println("getColumnName: " + rs.getMetaData().getColumnName(1));
 	            System.out.println("getColumnCount: "+ rs.getMetaData().getColumnCount());
 	            //System.out.println("getColumnClassName: " + rs.getMetaData().getColumnClassName(1));
-		           
-		        
+
 	            System.out.println("getColumnDisplaySize: " + rs.getMetaData().getColumnDisplaySize(1));
+	            
+	            
 	            int nrOfColumns = rs.getMetaData().getColumnCount();
 		       	for(int i = startColumn; i<=nrOfColumns ;i++) {
 	               System.out.print("\t " + rs.getMetaData().getColumnName(i) + "[");
           
-	               System.out.print("" + rs.getMetaData().getColumnTypeName(i).toString() + "] \t| ");	                
+	               System.out.print("" + rs.getMetaData().getColumnTypeName(i).toString() + "(" + rs.getMetaData().getColumnDisplaySize(i) + ")] \t| ");	                
 	                
 	            }
 		       	System.out.print("\n");
@@ -249,11 +258,15 @@ public class OurDatabasConnection {
 	                	else if(rs.getObject(i).getClass().getName().equals("java.lang.Integer")) {	                		
 	                		rowArray.put(rs.getMetaData().getColumnName(i), rs.getInt(i));
 	                	}
+	                	else if(rs.getObject(i).getClass().getName().equals("java.math.BigDecimal")) {	  // SQL: DECIMAL, JAVA: java.math.BigDecimal / java.lang.Double             		
+	                		rowArray.put(rs.getMetaData().getColumnName(i), rs.getBigDecimal(i));
+	                	}
+	                	
 	                	else if(rs.getObject(i).getClass().getName().equals("java.sql.Timestamp")) {
 	                		rowArray.put(rs.getMetaData().getColumnName(i), rs.getTimestamp(i));
 	                	}
 	                	else {
-	                		System.out.print(",\t Uknown!, " + rs.getMetaData().getColumnTypeName(i).toString());
+	                		System.out.print(",\t Unknown!, " + rs.getMetaData().getColumnTypeName(i).toString());
 	                		System.out.print(rs.getObject(i).getClass().getName());
 	                		throw new NotSupportedDataTypeException();
 	                	}	
