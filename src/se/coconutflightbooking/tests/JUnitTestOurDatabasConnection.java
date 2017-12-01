@@ -55,20 +55,20 @@ class JUnitTestOurDatabasConnection {
 	}
 	
 	@Test
-	void testAddData() {
+	void testAddDataNumbers() {
 		OurDatabasConnection oDC = new OurDatabasConnection("localhost", "50000", "Coconut");
 		ArrayList<HashMap<String, Object>> rs;
 		
 		String tableName1 = "\"USER\".\"TESTNUMBER\""; 
 		
 		String sql1 = "Select * from \"USER\".\"TESTNUMBER\"";
-		String sql2 = "Select * from \"USER\".\"TESTDATES\"";
-		String sql3 = "Select * from \"USER\".\"TESTSTRING\"";
+		//String sql2 = "Select * from \"USER\".\"TESTDATES\"";
+		//String sql3 = "Select * from \"USER\".\"TESTSTRING\"";
 		
 		try {
 			rs = oDC.retrieveResult (sql1);
-			rs = oDC.retrieveResult (sql2);
-			rs = oDC.retrieveResult (sql3);
+			//rs = oDC.retrieveResult (sql2);
+			//rs = oDC.retrieveResult (sql3);
 			
 		} catch (NotSupportedDataTypeException e) {
 			// TODO Auto-generated catch block
@@ -95,4 +95,45 @@ class JUnitTestOurDatabasConnection {
 		
 	}
 
+	@Test
+	void testAddDataDates() {
+		OurDatabasConnection oDC = new OurDatabasConnection("localhost", "50000", "Coconut");
+		ArrayList<HashMap<String, Object>> rs;
+		
+		//String tableName1 = "\"USER\".\"TESTNUMBER\""; 
+		String tableName2 = "\"USER\".\"TESTDATES\""; 
+		//String tableName3 = "\"USER\".\"TESTSTRING\"";
+		
+		//String sql1 = "Select * from \"USER\".\"TESTNUMBER\"";
+		String sql2 = "Select * from \"USER\".\"TESTDATES\"";
+		//String sql3 = "Select * from \"USER\".\"TESTSTRING\"";
+		
+		try {
+			//rs = oDC.retrieveResult (sql1);
+			rs = oDC.retrieveResult (sql2);
+			//rs = oDC.retrieveResult (sql3);
+			
+		} catch (NotSupportedDataTypeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		HashMap<String, Object> addArray = new HashMap<String, Object>();
+		
+		addArray.put("TEST_DATE", 12.54);
+		addArray.put("TEST_TIMESTAMP", 24.54);
+		
+		try {
+			
+			boolean result = oDC.addData(addArray, tableName2);
+			System.out.println("OurDatabasConnection::addData() returned: " + result);
+
+			rs = oDC.retrieveResult (sql2);
+			
+		} catch (NotSupportedDataTypeException e) {
+			System.out.println("NotSupportedDataTypeException in addData");
+			//e.printStackTrace();
+		}
+		
+	}
 }

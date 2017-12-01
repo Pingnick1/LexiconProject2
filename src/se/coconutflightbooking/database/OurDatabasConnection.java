@@ -200,6 +200,12 @@ public class OurDatabasConnection {
 	}
 	*/
 	
+	/**
+	 * 
+	 * @param sql
+	 * @return ArrayList &lt;HashMap &lt;String, Object&gt; &gt;
+	 * @throws NotSupportedDataTypeException
+	 */
 	public ArrayList<HashMap<String, Object>> retrieveResult (String sql) throws NotSupportedDataTypeException {
 		Connection conn = null; 
 		Statement stm = null; 
@@ -289,6 +295,33 @@ public class OurDatabasConnection {
 			System.out.println(e);
 		}
 		return null;
+	}
+	
+	public void printInfoAboutTable(String tableName) {
+		Connection conn = null; 
+		Statement stm = null; 
+		ResultSet rs = null; 
+		
+		String sql = "SELECT * FROM " + tableName;
+		
+		try {	
+			try {
+				conn = DriverManager.getConnection("jdbc:derby://" + this.adress + ":" + this.port +"/" + this.database);
+				stm = conn.createStatement();
+				rs = stm.executeQuery(sql);
+			}
+			finally {
+				if(conn != null) conn.close();
+				if(stm != null) stm.close();
+				if(rs != null) rs.close();
+				System.out.println("Closing connection...");
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("SQLException");
+			System.out.println(e);
+		}
+		//return null;
 	}
 	
 }
