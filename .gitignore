@@ -24,3 +24,11 @@ hs_err_pid*
 
 db/
 
+target/
+bin/
+
+.classpath
+.project
+.idea
+
+

@@ -14,7 +14,7 @@ public class Reservation {
 	private TicketType ticketType;
 	private int ticketCost;
 	
-	//private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Använd denna istället: DateTimeFormatter.ISO_LOCAL_DATE
+	//private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");	// Anvï¿½nd denna istï¿½llet: DateTimeFormatter.ISO_LOCAL_DATE
 	private LocalDateTime reservationDateTime;
 	
 	public static void main(String[] args) {

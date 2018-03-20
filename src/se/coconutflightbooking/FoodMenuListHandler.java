@@ -60,7 +60,7 @@ public class FoodMenuListHandler {
 	public boolean addFoodMenuItem(FoodMenuItem newFoodMenuItem) {
 
 		if(this.ourFoodMenuList.containsKey(newFoodMenuItem.getfoodMenuID())) {
-			System.out.println("Menyval " + newFoodMenuItem.getfoodMenuID() + " finns redan i vår meny!");
+			System.out.println("Menyval " + newFoodMenuItem.getfoodMenuID() + " finns redan i vÃ¥r meny!");
 			return false;
 		}
 		else {
